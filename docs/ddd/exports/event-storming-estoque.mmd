@@ -1,0 +1,26 @@
+flowchart LR
+    A1["Ator: Funcionário"]:::actor --> C1["Cadastrar item"]:::command
+    C1 --> G1["Agregado: Item de estoque"]:::aggregate
+    G1 --> E1["Item cadastrado; abertura registrada se saldo inicial positivo"]:::event
+    P1["Regra: SKU único; saldo não negativo"]:::policy -.-> C1
+    A2["Ator: Funcionário"]:::actor --> C2["Repor ou ajustar saldo"]:::command
+    C2 --> G2["Agregado: Item de estoque"]:::aggregate
+    G2 --> E2["Entrada ou ajuste registrado"]:::event
+    P2["Regra: Quantidade assinada e motivo; mesma transação"]:::policy -.-> C2
+    E1 --> C2
+    A3["Ator: Funcionário / caso de uso"]:::actor --> C3["Iniciar primeiro serviço e baixar peças"]:::command
+    C3 --> G3["Agregado: OS / Item de estoque"]:::aggregate
+    G3 --> E3["Peças baixadas; saídas registradas"]:::event
+    P3["Regra: Aprovado; bloqueios ordenados; baixa única; rollback se insuficiente"]:::policy -.-> C3
+    E2 --> C3
+    A4["Ator: Funcionário"]:::actor --> C4["Consultar saldo e movimentos"]:::read
+    C4 --> G4["Agregado: Item de estoque"]:::aggregate
+    G4 --> E4["Saldo e histórico disponíveis"]:::read
+    P4["Regra: Leitura sem alterar saldo; saída referencia OS"]:::policy -.-> C4
+    E3 --> C4
+    classDef actor fill:#F5DD95,color:#172C3F,stroke:#705615;
+    classDef command fill:#CDE6FA,color:#172C3F,stroke:#174E78;
+    classDef aggregate fill:#FFF0A8,color:#172C3F,stroke:#796014;
+    classDef event fill:#FFD3A5,color:#172C3F,stroke:#8D4312;
+    classDef policy fill:#E7DDF3,color:#172C3F,stroke:#60427E;
+    classDef read fill:#D6EEDB,color:#172C3F,stroke:#315E3C;

@@ -1,0 +1,27 @@
+00:00:00  Swagger e aplicação em execução
+00:00:25  Autenticação administrativa
+00:00:48  Criando o cliente
+00:01:10  Vinculando o veículo
+00:01:31  Cadastrando o serviço
+00:01:54  Cadastrando a peça
+00:02:15  Cadastrando o insumo
+00:02:37  Abrindo a ordem de serviço
+00:02:59  Iniciando o diagnóstico
+00:03:25  Gerando o orçamento
+00:03:50  Acesso do cliente à própria ordem
+00:04:18  Consulta e aprovação pelo cliente
+00:04:45  Iniciando o serviço
+00:05:13  Conferindo o estoque após o início
+00:05:36  Concluindo o serviço e a ordem
+00:06:03  Entregando e acompanhando o veículo
+00:06:25  A arquitetura por trás desse fluxo
+00:06:52  C4: quem usa o sistema
+00:07:14  Uma aplicação, um banco
+00:07:41  Uma operação, uma transação
+00:08:05  A escolha do PostgreSQL
+00:08:34  As palavras também fazem parte do modelo
+00:09:02  Do mapa de eventos às regras
+00:09:30  As exceções também foram testadas
+00:10:00  Segurança com resultado verificável
+00:10:28  HTTP local e HTTPS em produção
+00:10:47  Grupo 1 — Lucas Velôso — RM 377934

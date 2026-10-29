@@ -1,0 +1,10 @@
+flowchart LR
+    F["Funcionário
+Pessoa"] -->|"Cadastros, orçamento e execução"| S["Sistema da oficina
+API monolítica"]
+    C["Cliente
+Pessoa"] -->|"Consulta da OS e decisão do orçamento"| S
+    classDef person fill:#38556E,color:#fff,stroke:#38556E;
+    classDef system fill:#1D5D8F,color:#fff,stroke:#1D5D8F;
+    class F,C person;
+    class S system;

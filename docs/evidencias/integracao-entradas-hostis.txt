@@ -1,0 +1,212 @@
+=== RUN   TestPostgresIntegration
+=== RUN   TestPostgresIntegration/health_and_cors
+=== RUN   TestPostgresIntegration/api_contract
+=== RUN   TestPostgresIntegration/api_contract/authentication_and_input_validation
+=== RUN   TestPostgresIntegration/api_contract/registrations_soft_delete_and_inventory
+=== RUN   TestPostgresIntegration/api_contract/complete_service_order_workflow
+=== RUN   TestPostgresIntegration/api_contract/complete_service_order_workflow/creation_snapshots_and_token_isolation
+=== RUN   TestPostgresIntegration/api_contract/complete_service_order_workflow/diagnosis_items_and_stale_version
+=== RUN   TestPostgresIntegration/api_contract/complete_service_order_workflow/quote_total_and_immutable_prices
+=== RUN   TestPostgresIntegration/api_contract/complete_service_order_workflow/rejection_revision_approval_and_superseded_decisions
+=== RUN   TestPostgresIntegration/api_contract/complete_service_order_workflow/insufficient_stock_rolls_back_entire_start
+=== RUN   TestPostgresIntegration/api_contract/complete_service_order_workflow/concurrent_starts_consume_stock_once
+=== RUN   TestPostgresIntegration/api_contract/complete_service_order_workflow/finish_services_complete_order_and_deliver
+=== RUN   TestPostgresIntegration/api_contract/complete_service_order_workflow/execution_metrics_and_empty_intervals
+=== RUN   TestPostgresIntegration/api_contract/complete_service_order_workflow/token_rotation_transfer_and_preserved_history
+=== RUN   TestPostgresIntegration/api_contract/two_orders_compete_for_one_stock_unit
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/malformed_json
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/null_body
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/array_body
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/multiple_json_values
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/wrong_media_type
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/missing_media_type
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/extra_field
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/missing_price
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/body_over_one_mib
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/empty_patch
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/null_required_name
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/null_required_price
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/object_in_text
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/long_name
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/string_boolean
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/fractional_price
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/text_price
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/int64_price_overflow
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/money_overflow
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/initial_stock_via_patch
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/invalid_inventory_type
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/document_without_type
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/type_without_document
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/invalid_email
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/null_vehicle_owner
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/invalid_year
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/missing_expected_version
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/fractional_version
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/zero_version
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/customer_uuid
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/patch_uuid
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/delete_uuid
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/nil_uuid
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/missing_resource
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/missing_patch_resource
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/order_uuid
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/command_uuid
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/service_item_uuid
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/missing_order
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/missing_order_command
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/movements_uuid
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/movement_uuid
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/missing_movement_item
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/movement_page
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/active_boolean
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/oversized_document_filter
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/oversized_name_filter
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/vehicle_customer_filter
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/page_not_integer
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/page_size_not_integer
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/order_page
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/order_customer_filter
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/order_status_filter
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/order_number_filter
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/order_number_overflow
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/missing_metric_interval
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/bad_metric_date
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/reversed_metric_interval
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/metric_pagination
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/unknown_route
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/unsupported_method
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/invalid_customer
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/invalid_vehicle
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/empty_problem
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/null_services
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/duplicate_service
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/unknown_service
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/null_parts
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/zero_quantity
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/fractional_quantity
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/quantity_int64_overflow
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/duplicate_part
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/extra_part_price
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/unknown_part
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/zero
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/negative_replenishment
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/unknown_type
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/fractional
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/int64_overflow
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/balance_overflow
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/minimum_negative
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/normalized_filters_pagination_and_inactive_records
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/quote_arithmetic_overflow_is_atomic
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/quote_arithmetic_overflow_is_atomic/sum
+=== RUN   TestPostgresIntegration/hostile_inputs_and_query_contract/quote_arithmetic_overflow_is_atomic/multiplication
+--- PASS: TestPostgresIntegration (0.55s)
+    --- PASS: TestPostgresIntegration/health_and_cors (0.00s)
+    --- PASS: TestPostgresIntegration/api_contract (0.29s)
+        --- PASS: TestPostgresIntegration/api_contract/authentication_and_input_validation (0.05s)
+        --- PASS: TestPostgresIntegration/api_contract/registrations_soft_delete_and_inventory (0.05s)
+        --- PASS: TestPostgresIntegration/api_contract/complete_service_order_workflow (0.12s)
+            --- PASS: TestPostgresIntegration/api_contract/complete_service_order_workflow/creation_snapshots_and_token_isolation (0.01s)
+            --- PASS: TestPostgresIntegration/api_contract/complete_service_order_workflow/diagnosis_items_and_stale_version (0.00s)
+            --- PASS: TestPostgresIntegration/api_contract/complete_service_order_workflow/quote_total_and_immutable_prices (0.01s)
+            --- PASS: TestPostgresIntegration/api_contract/complete_service_order_workflow/rejection_revision_approval_and_superseded_decisions (0.02s)
+            --- PASS: TestPostgresIntegration/api_contract/complete_service_order_workflow/insufficient_stock_rolls_back_entire_start (0.01s)
+            --- PASS: TestPostgresIntegration/api_contract/complete_service_order_workflow/concurrent_starts_consume_stock_once (0.02s)
+            --- PASS: TestPostgresIntegration/api_contract/complete_service_order_workflow/finish_services_complete_order_and_deliver (0.01s)
+            --- PASS: TestPostgresIntegration/api_contract/complete_service_order_workflow/execution_metrics_and_empty_intervals (0.01s)
+            --- PASS: TestPostgresIntegration/api_contract/complete_service_order_workflow/token_rotation_transfer_and_preserved_history (0.02s)
+        --- PASS: TestPostgresIntegration/api_contract/two_orders_compete_for_one_stock_unit (0.03s)
+    --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract (0.11s)
+        --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields (0.03s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/malformed_json (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/null_body (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/array_body (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/multiple_json_values (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/wrong_media_type (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/missing_media_type (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/extra_field (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/missing_price (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/body_over_one_mib (0.02s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/empty_patch (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/null_required_name (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/null_required_price (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/object_in_text (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/long_name (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/string_boolean (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/fractional_price (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/text_price (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/int64_price_overflow (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/money_overflow (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/initial_stock_via_patch (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/invalid_inventory_type (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/document_without_type (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/type_without_document (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/invalid_email (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/null_vehicle_owner (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/invalid_year (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/missing_expected_version (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/fractional_version (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/malformed_bodies_and_required_fields/zero_version (0.00s)
+        --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters (0.01s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/customer_uuid (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/patch_uuid (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/delete_uuid (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/nil_uuid (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/missing_resource (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/missing_patch_resource (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/order_uuid (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/command_uuid (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/service_item_uuid (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/missing_order (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/missing_order_command (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/movements_uuid (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/movement_uuid (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/missing_movement_item (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/movement_page (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/active_boolean (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/oversized_document_filter (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/oversized_name_filter (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/vehicle_customer_filter (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/page_not_integer (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/page_size_not_integer (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/order_page (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/order_customer_filter (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/order_status_filter (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/order_number_filter (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/order_number_overflow (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/missing_metric_interval (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/bad_metric_date (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/reversed_metric_interval (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/metric_pagination (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/unknown_route (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_routes_identifiers_and_filters/unsupported_method (0.00s)
+        --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow (0.01s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/invalid_customer (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/invalid_vehicle (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/empty_problem (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/null_services (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/duplicate_service (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/unknown_service (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/null_parts (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/zero_quantity (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/fractional_quantity (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/quantity_int64_overflow (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/duplicate_part (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/extra_part_price (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/unknown_part (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/zero (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/negative_replenishment (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/unknown_type (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/fractional (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/int64_overflow (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/balance_overflow (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/invalid_selections_and_stock_overflow/minimum_negative (0.00s)
+        --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/normalized_filters_pagination_and_inactive_records (0.02s)
+        --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/quote_arithmetic_overflow_is_atomic (0.01s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/quote_arithmetic_overflow_is_atomic/sum (0.00s)
+            --- PASS: TestPostgresIntegration/hostile_inputs_and_query_contract/quote_arithmetic_overflow_is_atomic/multiplication (0.00s)
+PASS
+ok  	oficina/tests	2.210s

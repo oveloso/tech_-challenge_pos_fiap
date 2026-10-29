@@ -9,6 +9,11 @@ coverage/
 *.out
 *.log
 tmp/
-entrega/video/*.mp4
+entrega/video/*
+!entrega/video/README.md
+!entrega/video/capitulos-final.txt
+!entrega/video/verificacao-final.json
 entrega/pdf/
 .DS_Store
+__pycache__/
+*.pyc

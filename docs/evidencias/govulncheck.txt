@@ -1,0 +1,66 @@
+Fetching vulnerabilities from the database...
+
+Checking the code against the vulnerabilities...
+
+The package pattern matched the following 10 root packages:
+  oficina/internal/domain
+  oficina/internal/platform
+  oficina/internal/auth
+  oficina/internal/registry
+  oficina/internal/workorders
+  oficina/internal/server
+  oficina/migrations
+  oficina/cmd/api
+  oficina/cmd/seed
+  oficina/tests
+Govulncheck scanned the following 27 modules and the go1.27.3 standard library:
+  oficina
+  github.com/gabriel-vasile/mimetype@v1.4.12
+  github.com/gin-contrib/sse@v1.1.0
+  github.com/gin-gonic/gin@v1.12.0
+  github.com/go-playground/locales@v0.14.1
+  github.com/go-playground/universal-translator@v0.18.1
+  github.com/go-playground/validator/v10@v10.30.1
+  github.com/goccy/go-yaml@v1.19.2
+  github.com/golang-jwt/jwt/v5@v5.3.1
+  github.com/google/uuid@v1.6.0
+  github.com/jackc/pgpassfile@v1.0.0
+  github.com/jackc/pgservicefile@v0.0.0-20240606120523-5a60cdf6a761
+  github.com/jackc/pgx/v5@v5.11.0
+  github.com/jackc/puddle/v2@v2.2.2
+  github.com/leodido/go-urn@v1.4.0
+  github.com/mattn/go-isatty@v0.0.20
+  github.com/pelletier/go-toml/v2@v2.2.4
+  github.com/quic-go/qpack@v0.6.0
+  github.com/quic-go/quic-go@v0.59.1
+  github.com/ugorji/go/codec@v1.3.1
+  go.mongodb.org/mongo-driver/v2@v2.5.0
+  golang.org/x/crypto@v0.58.0
+  golang.org/x/net@v0.62.0
+  golang.org/x/sync@v0.24.0
+  golang.org/x/sys@v0.49.0
+  golang.org/x/text@v0.43.0
+  google.golang.org/protobuf@v1.36.10
+
+=== Symbol Results ===
+
+No vulnerabilities found.
+
+=== Package Results ===
+
+No other vulnerabilities found.
+
+=== Module Results ===
+
+Vulnerability #1: GO-2026-5932
+    The golang.org/x/crypto/openpgp package is unmaintained, unsafe by design,
+    and has known security issues
+  More info: https://pkg.go.dev/vuln/GO-2026-5932
+  Module: golang.org/x/crypto
+    Found in: golang.org/x/crypto@v0.58.0
+    Fixed in: N/A
+
+Your code is affected by 0 vulnerabilities.
+This scan also found 0 vulnerabilities in packages you import and 1
+vulnerability in modules you require, but your code doesn't appear to call these
+vulnerabilities.

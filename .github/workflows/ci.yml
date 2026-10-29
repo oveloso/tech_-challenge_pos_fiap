@@ -1,0 +1,112 @@
+name: Verificação da API
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18-alpine
+        env:
+          POSTGRES_USER: oficina
+          POSTGRES_DB: oficina_test
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U oficina -d oficina_test"
+          --health-interval 5s --health-timeout 3s --health-retries 20
+    defaults:
+      run:
+        working-directory: backend
+    env:
+      TEST_DATABASE_URL: postgres://oficina@localhost:5432/oficina_test?sslmode=disable
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.27.3"
+          cache-dependency-path: backend/go.sum
+      - name: Formatação e análise estática
+        run: |
+          test -z "$(gofmt -l .)"
+          go vet ./...
+          go build ./cmd/...
+      - name: Testes e cobertura
+        run: |
+          go test -race -count=1 -coverpkg=./... -coverprofile=coverage.out ./...
+          go tool cover -func=coverage.out
+          go tool cover -func=coverage.out | awk '/^total:/ { gsub(/%/, "", $3); if ($3+0 < 80) exit 1 }'
+          go test -count=1 -coverprofile=critical.out ./internal/domain
+          go tool cover -func=critical.out
+          go tool cover -func=critical.out | awk '/^total:/ { gsub(/%/, "", $3); if ($3+0 < 80) exit 1 }'
+      - name: Vulnerabilidades Go
+        run: go run golang.org/x/vuln/cmd/govulncheck@v1.9.0 ./...
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: backend-evidencias
+          path: |
+            backend/coverage.out
+            backend/critical.out
+
+  compose-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configuração descartável
+        run: |
+          sh scripts/configure.sh
+          while IFS='=' read -r key value; do
+            case "$key" in
+              POSTGRES_PASSWORD|ADMIN_PASSWORD|JWT_SECRET) echo "::add-mask::$value" ;;
+            esac
+          done < .env
+          docker compose config --quiet
+      - name: Construir e iniciar o ambiente
+        run: |
+          docker compose up --build --detach
+          seed_id=$(docker compose ps --all --quiet seed)
+          test "$(docker inspect --format '{{.State.Status}}:{{.State.ExitCode}}' "$seed_id")" = 'exited:0'
+      - name: Verificar API, Swagger e contrato
+        run: |
+          for attempt in $(seq 1 60); do
+            if curl --fail --silent http://127.0.0.1:8080/health > /tmp/oficina-health.json; then
+              break
+            fi
+            sleep 2
+          done
+          curl --fail --silent --show-error http://127.0.0.1:8080/health | jq --exit-status '.status == "ok"'
+          curl --fail --silent --show-error http://127.0.0.1:8080/docs -o /tmp/oficina-swagger.html
+          grep -q 'SwaggerUIBundle' /tmp/oficina-swagger.html
+          curl --fail --silent --show-error http://127.0.0.1:8080/openapi.yaml -o /tmp/oficina-openapi.yaml
+          grep -q '^openapi: 3\.0\.3' /tmp/oficina-openapi.yaml
+          docker compose ps --all
+      - name: Autenticar administrador criado pelo seed
+        run: |
+          set -a
+          . ./.env
+          set +a
+          login_response=$(jq -n '{username: env.ADMIN_USERNAME, password: env.ADMIN_PASSWORD}' |
+            curl --fail --silent --show-error -H 'Content-Type: application/json' \
+              --data-binary @- http://127.0.0.1:8080/api/v1/auth/login)
+          token=$(printf '%s' "$login_response" | jq --exit-status --raw-output '.accessToken | select(type == "string" and length > 0)')
+          echo "::add-mask::$token"
+          status=$(curl --fail --silent --show-error --output /tmp/oficina-orders.json \
+            --write-out '%{http_code}' -H "Authorization: Bearer $token" \
+            http://127.0.0.1:8080/api/v1/admin/service-orders)
+          test "$status" = '200'
+      - name: Diagnóstico em caso de falha
+        if: failure()
+        run: docker compose logs --no-color --tail 150
+      - name: Encerrar ambiente de teste
+        if: always()
+        run: docker compose down --volumes --remove-orphans

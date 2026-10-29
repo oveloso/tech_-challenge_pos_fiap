@@ -1,0 +1,25 @@
+flowchart TB
+    F["Funcionário: JWT + expectedVersion"] --> E
+    subgraph API["API Go / Gin: início do primeiro serviço"]
+      E["Entrada e autorização
+server.New / auth.Admin"] --> H["Handler
+workorders.command"]
+      H --> A["Caso de uso
+workorders.Service.Execute"]
+      A -->|"Versão, aprovação e estado"| D["Domínio
+Order.CheckVersion / StartService"]
+      A --> R["Persistência da OS
+workorders.Load / Save"]
+      A --> B["Baixa dos itens
+consume / platform.Get e Save
+domain.AdjustStock"]
+      A --> M["Movimentos
+registry.InsertMovement"]
+    end
+    R -->|"OS: SELECT FOR UPDATE / gravação"| DB[("PostgreSQL 18")]
+    B -->|"Itens: bloqueio em ordem estável / gravação"| DB
+    M -->|"INSERT vinculado à OS"| DB
+    T["Mesma transação pgx.
+Falha: rollback. Sucesso: commit."] -.-> DB
+    classDef component fill:#E4F0FB,color:#172C3F,stroke:#91AFC6;
+    class E,H,A,D,R,B,M component;
