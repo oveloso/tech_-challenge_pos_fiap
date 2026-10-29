@@ -1,0 +1,23 @@
+{
+  "checkedAt": "2026-10-29T13:41:37.845979+00:00",
+  "operation": "docker compose down sem volumes, seguido de up --detach; containers recriados e seed repetido",
+  "project": "oficina-fiap-verificacao",
+  "status": "PASSED",
+  "checks": {
+    "health": true,
+    "sameOrderId": true,
+    "statusPreserved": true,
+    "versionPreserved": true,
+    "quoteVersionsPreserved": true,
+    "approvedTotalPreserved": true,
+    "stockBalancePreserved": true,
+    "historyPreserved": true
+  },
+  "order": {
+    "id": "ad4c8ecb-e15e-432c-b087-27c858a986ef",
+    "number": 2,
+    "status": "DELIVERED",
+    "version": 11
+  },
+  "inventoryBalance": 6
+}

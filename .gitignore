@@ -15,3 +15,5 @@ entrega/video/*
 !entrega/video/verificacao-final.json
 entrega/pdf/
 .DS_Store
+__pycache__/
+*.pyc

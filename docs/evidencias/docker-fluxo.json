@@ -1,0 +1,3209 @@
+{
+  "title": "Validação real do fluxo HTTP da API em Docker Compose",
+  "baseUrl": "http://127.0.0.1:18080",
+  "startedAt": "2026-10-29T13:34:31.971Z",
+  "finishedAt": "2026-10-29T13:34:32.827Z",
+  "status": "PASSED",
+  "scope": "Requisições HTTP reais; somente cadastros sintéticos novos no banco oficina.",
+  "redaction": "Senhas, nomes de usuário, tokens, Authorization e documentos pessoais ocultados.",
+  "steps": [
+    {
+      "index": 1,
+      "title": "Saúde da API e do PostgreSQL",
+      "phase": "Segurança",
+      "startedAt": "2026-10-29T13:34:31.971Z",
+      "completedAt": "2026-10-29T13:34:32.133Z",
+      "durationMs": 162.235,
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:18080/api/v1/health",
+        "headers": {
+          "Accept": "application/json"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "no-store",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "body": {
+          "status": "ok"
+        }
+      },
+      "expectedStatus": 200,
+      "assertions": [
+        {
+          "description": "Código HTTP esperado",
+          "passed": true
+        },
+        {
+          "description": "API respondeu status ok",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "title": "Rota administrativa sem JWT é bloqueada",
+      "phase": "Segurança",
+      "startedAt": "2026-10-29T13:34:32.135Z",
+      "completedAt": "2026-10-29T13:34:32.139Z",
+      "durationMs": 3.44,
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:18080/api/v1/admin/customers",
+        "headers": {
+          "Accept": "application/json"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 401,
+        "headers": {
+          "Content-Type": "application/problem+json",
+          "Cache-Control": "no-store",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "body": {
+          "code": "UNAUTHORIZED",
+          "detail": "Credencial inválida ou expirada.",
+          "status": 401,
+          "title": "Unauthorized",
+          "type": "about:blank"
+        }
+      },
+      "expectedStatus": 401,
+      "assertions": [
+        {
+          "description": "Código HTTP esperado",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "title": "Autenticação do funcionário",
+      "phase": "Segurança",
+      "startedAt": "2026-10-29T13:34:32.140Z",
+      "completedAt": "2026-10-29T13:34:32.195Z",
+      "durationMs": 55.731,
+      "request": {
+        "method": "POST",
+        "url": "http://127.0.0.1:18080/api/v1/auth/login",
+        "headers": {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "username": "[oculto]",
+          "password": "[oculto]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "no-store",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "body": {
+          "accessToken": "[oculto]",
+          "expiresAt": "2026-10-29T14:34:32.195698475Z",
+          "tokenType": "Bearer"
+        }
+      },
+      "expectedStatus": 200,
+      "assertions": [
+        {
+          "description": "Código HTTP esperado",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "title": "Cadastro de cliente sintético",
+      "phase": "Cadastros",
+      "startedAt": "2026-10-29T13:34:32.198Z",
+      "completedAt": "2026-10-29T13:34:32.204Z",
+      "durationMs": 6.382,
+      "request": {
+        "method": "POST",
+        "url": "http://127.0.0.1:18080/api/v1/admin/customers",
+        "headers": {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": "[oculto]"
+        },
+        "body": {
+          "name": "Cliente demonstração vídeo 1029-133432-deb9",
+          "documentType": "CPF",
+          "document": "***.***.***-**",
+          "email": "video@example.invalid",
+          "phone": null
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "no-store",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "body": {
+          "active": true,
+          "createdAt": "2026-10-29T13:34:32.201115907Z",
+          "document": "***.***.***-**",
+          "documentType": "CPF",
+          "email": "video@example.invalid",
+          "id": "523cd5b3-4263-4485-bd2c-5853898f6fa8",
+          "name": "Cliente demonstração vídeo 1029-133432-deb9",
+          "phone": null,
+          "updatedAt": "2026-10-29T13:34:32.201115907Z"
+        }
+      },
+      "expectedStatus": 201,
+      "assertions": [
+        {
+          "description": "Código HTTP esperado",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "title": "Veículo vinculado ao cliente",
+      "phase": "Cadastros",
+      "startedAt": "2026-10-29T13:34:32.205Z",
+      "completedAt": "2026-10-29T13:34:32.212Z",
+      "durationMs": 6.344,
+      "request": {
+        "method": "POST",
+        "url": "http://127.0.0.1:18080/api/v1/admin/vehicles",
+        "headers": {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": "[oculto]"
+        },
+        "body": {
+          "customerId": "523cd5b3-4263-4485-bd2c-5853898f6fa8",
+          "plate": "VDO5I53",
+          "brand": "Marca Demo",
+          "model": "Hatch Demonstração",
+          "year": 2024
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "no-store",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "body": {
+          "active": true,
+          "brand": "Marca Demo",
+          "createdAt": "2026-10-29T13:34:32.208589394Z",
+          "customerId": "523cd5b3-4263-4485-bd2c-5853898f6fa8",
+          "id": "ba9e536c-60b3-4170-a926-0bcd131c7995",
+          "model": "Hatch Demonstração",
+          "plate": "VDO5I53",
+          "updatedAt": "2026-10-29T13:34:32.208589394Z",
+          "year": 2024
+        }
+      },
+      "expectedStatus": 201,
+      "assertions": [
+        {
+          "description": "Código HTTP esperado",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "title": "Serviço com preço em centavos",
+      "phase": "Cadastros",
+      "startedAt": "2026-10-29T13:34:32.213Z",
+      "completedAt": "2026-10-29T13:34:32.218Z",
+      "durationMs": 5.276,
+      "request": {
+        "method": "POST",
+        "url": "http://127.0.0.1:18080/api/v1/admin/services",
+        "headers": {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": "[oculto]"
+        },
+        "body": {
+          "name": "Revisão de freios — vídeo 1029-133432-deb9",
+          "description": "Serviço sintético desta gravação.",
+          "priceCents": 15000
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "no-store",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "body": {
+          "active": true,
+          "createdAt": "2026-10-29T13:34:32.216293723Z",
+          "description": "Serviço sintético desta gravação.",
+          "id": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+          "name": "Revisão de freios — vídeo 1029-133432-deb9",
+          "priceCents": 15000,
+          "updatedAt": "2026-10-29T13:34:32.216293723Z"
+        }
+      },
+      "expectedStatus": 201,
+      "assertions": [
+        {
+          "description": "Código HTTP esperado",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "title": "Peça com saldo inicial e preço em centavos",
+      "phase": "Cadastros",
+      "startedAt": "2026-10-29T13:34:32.220Z",
+      "completedAt": "2026-10-29T13:34:32.227Z",
+      "durationMs": 7.701,
+      "request": {
+        "method": "POST",
+        "url": "http://127.0.0.1:18080/api/v1/admin/inventory-items",
+        "headers": {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": "[oculto]"
+        },
+        "body": {
+          "sku": "VIDEO-1029-133432-deb9",
+          "name": "Pastilha — vídeo 1029-133432-deb9",
+          "type": "PART",
+          "priceCents": 8900,
+          "initialQuantity": 8
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "no-store",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "body": {
+          "active": true,
+          "balance": 8,
+          "createdAt": "2026-10-29T13:34:32.223550509Z",
+          "id": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+          "name": "Pastilha — vídeo 1029-133432-deb9",
+          "priceCents": 8900,
+          "sku": "VIDEO-1029-133432-DEB9",
+          "type": "PART",
+          "updatedAt": "2026-10-29T13:34:32.223550509Z"
+        }
+      },
+      "expectedStatus": 201,
+      "assertions": [
+        {
+          "description": "Código HTTP esperado",
+          "passed": true
+        },
+        {
+          "description": "Saldo inicial de 8 unidades",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "title": "Abertura da OS: RECEIVED",
+      "phase": "Ordem de serviço",
+      "startedAt": "2026-10-29T13:34:32.230Z",
+      "completedAt": "2026-10-29T13:34:32.241Z",
+      "durationMs": 10.184,
+      "request": {
+        "method": "POST",
+        "url": "http://127.0.0.1:18080/api/v1/admin/service-orders",
+        "headers": {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": "[oculto]"
+        },
+        "body": {
+          "customerId": "523cd5b3-4263-4485-bd2c-5853898f6fa8",
+          "vehicleId": "ba9e536c-60b3-4170-a926-0bcd131c7995",
+          "problemDescription": "Ruído ao frear — demonstração com dados sintéticos.",
+          "serviceIds": [
+            "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1"
+          ],
+          "parts": [
+            {
+              "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+              "quantity": 2
+            }
+          ]
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "no-store",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "body": {
+          "id": "ad4c8ecb-e15e-432c-b087-27c858a986ef",
+          "number": 2,
+          "customerId": "523cd5b3-4263-4485-bd2c-5853898f6fa8",
+          "customerName": "Cliente demonstração vídeo 1029-133432-deb9",
+          "vehicleId": "ba9e536c-60b3-4170-a926-0bcd131c7995",
+          "vehiclePlate": "VDO5I53",
+          "status": "RECEIVED",
+          "version": 1,
+          "createdAt": "2026-10-29T13:34:32.235542314Z",
+          "executionStartedAt": null,
+          "completedAt": null,
+          "deliveredAt": null,
+          "problemDescription": "Ruído ao frear — demonstração com dados sintéticos.",
+          "services": [
+            {
+              "id": "d7212222-3eb9-409d-bfff-050fd6444b74",
+              "serviceId": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+              "name": "Revisão de freios — vídeo 1029-133432-deb9",
+              "status": "NOT_STARTED",
+              "startedAt": null,
+              "completedAt": null
+            }
+          ],
+          "parts": [
+            {
+              "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+              "sku": "VIDEO-1029-133432-DEB9",
+              "name": "Pastilha — vídeo 1029-133432-deb9",
+              "quantity": 2
+            }
+          ],
+          "currentQuote": null,
+          "quotes": [],
+          "history": [
+            {
+              "type": "ORDER_RECEIVED",
+              "status": "RECEIVED",
+              "occurredAt": "2026-10-29T13:34:32.235542314Z"
+            }
+          ],
+          "stockConsumedAt": null,
+          "vehicle": {
+            "plate": "VDO5I53",
+            "brand": "Marca Demo",
+            "model": "Hatch Demonstração",
+            "year": 2024
+          }
+        }
+      },
+      "expectedStatus": 201,
+      "assertions": [
+        {
+          "description": "Código HTTP esperado",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "index": 9,
+      "title": "Diagnóstico: IN_DIAGNOSIS",
+      "phase": "Ordem de serviço",
+      "startedAt": "2026-10-29T13:34:32.242Z",
+      "completedAt": "2026-10-29T13:34:32.249Z",
+      "durationMs": 6.672,
+      "request": {
+        "method": "POST",
+        "url": "http://127.0.0.1:18080/api/v1/admin/service-orders/ad4c8ecb-e15e-432c-b087-27c858a986ef/diagnosis/start",
+        "headers": {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": "[oculto]"
+        },
+        "body": {
+          "expectedVersion": 1
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "no-store",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "body": {
+          "id": "ad4c8ecb-e15e-432c-b087-27c858a986ef",
+          "number": 2,
+          "customerId": "523cd5b3-4263-4485-bd2c-5853898f6fa8",
+          "customerName": "Cliente demonstração vídeo 1029-133432-deb9",
+          "vehicleId": "ba9e536c-60b3-4170-a926-0bcd131c7995",
+          "vehiclePlate": "VDO5I53",
+          "status": "IN_DIAGNOSIS",
+          "version": 2,
+          "createdAt": "2026-10-29T13:34:32.235542314Z",
+          "executionStartedAt": null,
+          "completedAt": null,
+          "deliveredAt": null,
+          "problemDescription": "Ruído ao frear — demonstração com dados sintéticos.",
+          "services": [
+            {
+              "id": "d7212222-3eb9-409d-bfff-050fd6444b74",
+              "serviceId": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+              "name": "Revisão de freios — vídeo 1029-133432-deb9",
+              "status": "NOT_STARTED",
+              "startedAt": null,
+              "completedAt": null
+            }
+          ],
+          "parts": [
+            {
+              "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+              "sku": "VIDEO-1029-133432-DEB9",
+              "name": "Pastilha — vídeo 1029-133432-deb9",
+              "quantity": 2
+            }
+          ],
+          "currentQuote": null,
+          "quotes": [],
+          "history": [
+            {
+              "type": "ORDER_RECEIVED",
+              "status": "RECEIVED",
+              "occurredAt": "2026-10-29T13:34:32.235542314Z"
+            },
+            {
+              "type": "DIAGNOSIS_STARTED",
+              "status": "IN_DIAGNOSIS",
+              "occurredAt": "2026-10-29T13:34:32.246831247Z"
+            }
+          ],
+          "stockConsumedAt": null,
+          "vehicle": {
+            "plate": "VDO5I53",
+            "brand": "Marca Demo",
+            "model": "Hatch Demonstração",
+            "year": 2024
+          }
+        }
+      },
+      "expectedStatus": 200,
+      "assertions": [
+        {
+          "description": "Código HTTP esperado",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "index": 10,
+      "title": "Versão desatualizada retorna conflito sem publicar orçamento",
+      "phase": "Concorrência",
+      "startedAt": "2026-10-29T13:34:32.251Z",
+      "completedAt": "2026-10-29T13:34:32.256Z",
+      "durationMs": 4.741,
+      "request": {
+        "method": "POST",
+        "url": "http://127.0.0.1:18080/api/v1/admin/service-orders/ad4c8ecb-e15e-432c-b087-27c858a986ef/quotes",
+        "headers": {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": "[oculto]"
+        },
+        "body": {
+          "expectedVersion": 1
+        }
+      },
+      "response": {
+        "status": 409,
+        "headers": {
+          "Content-Type": "application/problem+json",
+          "Cache-Control": "no-store",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "body": {
+          "code": "VERSION_CONFLICT",
+          "detail": "A OS foi alterada. Atualize os dados e tente novamente.",
+          "status": 409,
+          "title": "Conflict",
+          "type": "about:blank"
+        }
+      },
+      "expectedStatus": 409,
+      "assertions": [
+        {
+          "description": "Código HTTP esperado",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "index": 11,
+      "title": "Orçamento automático: AWAITING_APPROVAL",
+      "phase": "Ordem de serviço",
+      "startedAt": "2026-10-29T13:34:32.258Z",
+      "completedAt": "2026-10-29T13:34:32.266Z",
+      "durationMs": 7.699,
+      "request": {
+        "method": "POST",
+        "url": "http://127.0.0.1:18080/api/v1/admin/service-orders/ad4c8ecb-e15e-432c-b087-27c858a986ef/quotes",
+        "headers": {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": "[oculto]"
+        },
+        "body": {
+          "expectedVersion": 2
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "no-store",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "body": {
+          "id": "ad4c8ecb-e15e-432c-b087-27c858a986ef",
+          "number": 2,
+          "customerId": "523cd5b3-4263-4485-bd2c-5853898f6fa8",
+          "customerName": "Cliente demonstração vídeo 1029-133432-deb9",
+          "vehicleId": "ba9e536c-60b3-4170-a926-0bcd131c7995",
+          "vehiclePlate": "VDO5I53",
+          "status": "AWAITING_APPROVAL",
+          "version": 3,
+          "createdAt": "2026-10-29T13:34:32.235542314Z",
+          "executionStartedAt": null,
+          "completedAt": null,
+          "deliveredAt": null,
+          "problemDescription": "Ruído ao frear — demonstração com dados sintéticos.",
+          "services": [
+            {
+              "id": "d7212222-3eb9-409d-bfff-050fd6444b74",
+              "serviceId": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+              "name": "Revisão de freios — vídeo 1029-133432-deb9",
+              "status": "NOT_STARTED",
+              "startedAt": null,
+              "completedAt": null
+            }
+          ],
+          "parts": [
+            {
+              "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+              "sku": "VIDEO-1029-133432-DEB9",
+              "name": "Pastilha — vídeo 1029-133432-deb9",
+              "quantity": 2
+            }
+          ],
+          "currentQuote": {
+            "id": "76d3f478-d427-403d-afb1-cc43b1f33033",
+            "version": 1,
+            "status": "PENDING",
+            "services": [
+              {
+                "serviceOrderServiceId": "d7212222-3eb9-409d-bfff-050fd6444b74",
+                "serviceId": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+                "name": "Revisão de freios — vídeo 1029-133432-deb9",
+                "priceCents": 15000
+              }
+            ],
+            "parts": [
+              {
+                "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+                "name": "Pastilha — vídeo 1029-133432-deb9",
+                "quantity": 2,
+                "unitPriceCents": 8900,
+                "subtotalCents": 17800
+              }
+            ],
+            "totalCents": 32800,
+            "publishedAt": "2026-10-29T13:34:32.263154038Z",
+            "decidedAt": null,
+            "decision": null
+          },
+          "quotes": [
+            {
+              "id": "76d3f478-d427-403d-afb1-cc43b1f33033",
+              "version": 1,
+              "status": "PENDING",
+              "services": [
+                {
+                  "serviceOrderServiceId": "d7212222-3eb9-409d-bfff-050fd6444b74",
+                  "serviceId": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+                  "name": "Revisão de freios — vídeo 1029-133432-deb9",
+                  "priceCents": 15000
+                }
+              ],
+              "parts": [
+                {
+                  "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+                  "name": "Pastilha — vídeo 1029-133432-deb9",
+                  "quantity": 2,
+                  "unitPriceCents": 8900,
+                  "subtotalCents": 17800
+                }
+              ],
+              "totalCents": 32800,
+              "publishedAt": "2026-10-29T13:34:32.263154038Z",
+              "decidedAt": null,
+              "decision": null
+            }
+          ],
+          "history": [
+            {
+              "type": "ORDER_RECEIVED",
+              "status": "RECEIVED",
+              "occurredAt": "2026-10-29T13:34:32.235542314Z"
+            },
+            {
+              "type": "DIAGNOSIS_STARTED",
+              "status": "IN_DIAGNOSIS",
+              "occurredAt": "2026-10-29T13:34:32.246831247Z"
+            },
+            {
+              "type": "QUOTE_PUBLISHED",
+              "status": "AWAITING_APPROVAL",
+              "occurredAt": "2026-10-29T13:34:32.263154038Z"
+            }
+          ],
+          "stockConsumedAt": null,
+          "vehicle": {
+            "plate": "VDO5I53",
+            "brand": "Marca Demo",
+            "model": "Hatch Demonstração",
+            "year": 2024
+          }
+        }
+      },
+      "expectedStatus": 200,
+      "assertions": [
+        {
+          "description": "Código HTTP esperado",
+          "passed": true
+        },
+        {
+          "description": "Total calculado: 15000 + 2 × 8900 = 32800 centavos",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "index": 12,
+      "title": "Emissão de acesso exclusivo do cliente",
+      "phase": "Acesso do cliente",
+      "startedAt": "2026-10-29T13:34:32.271Z",
+      "completedAt": "2026-10-29T13:34:32.278Z",
+      "durationMs": 7.925,
+      "request": {
+        "method": "POST",
+        "url": "http://127.0.0.1:18080/api/v1/admin/service-orders/ad4c8ecb-e15e-432c-b087-27c858a986ef/customer-access",
+        "headers": {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": "[oculto]"
+        },
+        "body": {
+          "expectedVersion": 3
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "no-store",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "body": {
+          "expiresAt": "2026-11-28T13:34:32.275169702Z",
+          "token": "[oculto]",
+          "workOrderVersion": 4
+        }
+      },
+      "expectedStatus": 201,
+      "assertions": [
+        {
+          "description": "Código HTTP esperado",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "index": 13,
+      "title": "Cliente consulta somente a sua OS",
+      "phase": "Acesso do cliente",
+      "startedAt": "2026-10-29T13:34:32.281Z",
+      "completedAt": "2026-10-29T13:34:32.285Z",
+      "durationMs": 4.705,
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:18080/api/v1/customer/service-order",
+        "headers": {
+          "Accept": "application/json",
+          "Authorization": "[oculto]"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "no-store",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "body": {
+          "completedAt": null,
+          "createdAt": "2026-10-29T13:34:32.235542314Z",
+          "currentQuote": {
+            "decidedAt": null,
+            "decision": null,
+            "id": "76d3f478-d427-403d-afb1-cc43b1f33033",
+            "parts": [
+              {
+                "name": "Pastilha — vídeo 1029-133432-deb9",
+                "quantity": 2,
+                "subtotalCents": 17800,
+                "unitPriceCents": 8900
+              }
+            ],
+            "publishedAt": "2026-10-29T13:34:32.263154038Z",
+            "services": [
+              {
+                "name": "Revisão de freios — vídeo 1029-133432-deb9",
+                "priceCents": 15000
+              }
+            ],
+            "status": "PENDING",
+            "totalCents": 32800,
+            "version": 1
+          },
+          "deliveredAt": null,
+          "executionStartedAt": null,
+          "history": [
+            {
+              "type": "ORDER_RECEIVED",
+              "status": "RECEIVED",
+              "occurredAt": "2026-10-29T13:34:32.235542314Z"
+            },
+            {
+              "type": "DIAGNOSIS_STARTED",
+              "status": "IN_DIAGNOSIS",
+              "occurredAt": "2026-10-29T13:34:32.246831247Z"
+            },
+            {
+              "type": "QUOTE_PUBLISHED",
+              "status": "AWAITING_APPROVAL",
+              "occurredAt": "2026-10-29T13:34:32.263154038Z"
+            }
+          ],
+          "number": 2,
+          "parts": [
+            {
+              "name": "Pastilha — vídeo 1029-133432-deb9",
+              "quantity": 2
+            }
+          ],
+          "services": [
+            {
+              "completedAt": null,
+              "name": "Revisão de freios — vídeo 1029-133432-deb9",
+              "startedAt": null,
+              "status": "NOT_STARTED"
+            }
+          ],
+          "status": "AWAITING_APPROVAL",
+          "vehicle": {
+            "plate": "VDO5I53",
+            "brand": "Marca Demo",
+            "model": "Hatch Demonstração",
+            "year": 2024
+          }
+        }
+      },
+      "expectedStatus": 200,
+      "assertions": [
+        {
+          "description": "Código HTTP esperado",
+          "passed": true
+        },
+        {
+          "description": "Resposta pública sem documento ou cadastro administrativo",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "index": 14,
+      "title": "Cliente rejeita o primeiro orçamento",
+      "phase": "Revisão do orçamento",
+      "startedAt": "2026-10-29T13:34:32.290Z",
+      "completedAt": "2026-10-29T13:34:32.296Z",
+      "durationMs": 6.435,
+      "request": {
+        "method": "POST",
+        "url": "http://127.0.0.1:18080/api/v1/customer/service-order/quote-decision",
+        "headers": {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": "[oculto]"
+        },
+        "body": {
+          "quoteId": "76d3f478-d427-403d-afb1-cc43b1f33033",
+          "decision": "REJECTED"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "no-store",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "body": {
+          "completedAt": null,
+          "createdAt": "2026-10-29T13:34:32.235542314Z",
+          "currentQuote": {
+            "decidedAt": "2026-10-29T13:34:32.294544626Z",
+            "decision": "REJECTED",
+            "id": "76d3f478-d427-403d-afb1-cc43b1f33033",
+            "parts": [
+              {
+                "name": "Pastilha — vídeo 1029-133432-deb9",
+                "quantity": 2,
+                "subtotalCents": 17800,
+                "unitPriceCents": 8900
+              }
+            ],
+            "publishedAt": "2026-10-29T13:34:32.263154038Z",
+            "services": [
+              {
+                "name": "Revisão de freios — vídeo 1029-133432-deb9",
+                "priceCents": 15000
+              }
+            ],
+            "status": "REJECTED",
+            "totalCents": 32800,
+            "version": 1
+          },
+          "deliveredAt": null,
+          "executionStartedAt": null,
+          "history": [
+            {
+              "type": "ORDER_RECEIVED",
+              "status": "RECEIVED",
+              "occurredAt": "2026-10-29T13:34:32.235542314Z"
+            },
+            {
+              "type": "DIAGNOSIS_STARTED",
+              "status": "IN_DIAGNOSIS",
+              "occurredAt": "2026-10-29T13:34:32.246831247Z"
+            },
+            {
+              "type": "QUOTE_PUBLISHED",
+              "status": "AWAITING_APPROVAL",
+              "occurredAt": "2026-10-29T13:34:32.263154038Z"
+            },
+            {
+              "type": "QUOTE_REJECTED",
+              "status": "IN_DIAGNOSIS",
+              "occurredAt": "2026-10-29T13:34:32.294544626Z"
+            }
+          ],
+          "number": 2,
+          "parts": [
+            {
+              "name": "Pastilha — vídeo 1029-133432-deb9",
+              "quantity": 2
+            }
+          ],
+          "services": [
+            {
+              "completedAt": null,
+              "name": "Revisão de freios — vídeo 1029-133432-deb9",
+              "startedAt": null,
+              "status": "NOT_STARTED"
+            }
+          ],
+          "status": "IN_DIAGNOSIS",
+          "vehicle": {
+            "plate": "VDO5I53",
+            "brand": "Marca Demo",
+            "model": "Hatch Demonstração",
+            "year": 2024
+          }
+        }
+      },
+      "expectedStatus": 200,
+      "assertions": [
+        {
+          "description": "Código HTTP esperado",
+          "passed": true
+        },
+        {
+          "description": "Rejeição devolve a OS para diagnóstico",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "index": 15,
+      "title": "Oficina consulta a rejeição registrada",
+      "phase": "Revisão do orçamento",
+      "startedAt": "2026-10-29T13:34:32.302Z",
+      "completedAt": "2026-10-29T13:34:32.306Z",
+      "durationMs": 3.976,
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:18080/api/v1/admin/service-orders/ad4c8ecb-e15e-432c-b087-27c858a986ef",
+        "headers": {
+          "Accept": "application/json",
+          "Authorization": "[oculto]"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "no-store",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "body": {
+          "id": "ad4c8ecb-e15e-432c-b087-27c858a986ef",
+          "number": 2,
+          "customerId": "523cd5b3-4263-4485-bd2c-5853898f6fa8",
+          "customerName": "Cliente demonstração vídeo 1029-133432-deb9",
+          "vehicleId": "ba9e536c-60b3-4170-a926-0bcd131c7995",
+          "vehiclePlate": "VDO5I53",
+          "status": "IN_DIAGNOSIS",
+          "version": 5,
+          "createdAt": "2026-10-29T13:34:32.235542314Z",
+          "executionStartedAt": null,
+          "completedAt": null,
+          "deliveredAt": null,
+          "problemDescription": "Ruído ao frear — demonstração com dados sintéticos.",
+          "services": [
+            {
+              "id": "d7212222-3eb9-409d-bfff-050fd6444b74",
+              "serviceId": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+              "name": "Revisão de freios — vídeo 1029-133432-deb9",
+              "status": "NOT_STARTED",
+              "startedAt": null,
+              "completedAt": null
+            }
+          ],
+          "parts": [
+            {
+              "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+              "sku": "VIDEO-1029-133432-DEB9",
+              "name": "Pastilha — vídeo 1029-133432-deb9",
+              "quantity": 2
+            }
+          ],
+          "currentQuote": {
+            "id": "76d3f478-d427-403d-afb1-cc43b1f33033",
+            "version": 1,
+            "status": "REJECTED",
+            "services": [
+              {
+                "serviceOrderServiceId": "d7212222-3eb9-409d-bfff-050fd6444b74",
+                "serviceId": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+                "name": "Revisão de freios — vídeo 1029-133432-deb9",
+                "priceCents": 15000
+              }
+            ],
+            "parts": [
+              {
+                "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+                "name": "Pastilha — vídeo 1029-133432-deb9",
+                "quantity": 2,
+                "unitPriceCents": 8900,
+                "subtotalCents": 17800
+              }
+            ],
+            "totalCents": 32800,
+            "publishedAt": "2026-10-29T13:34:32.263154038Z",
+            "decidedAt": "2026-10-29T13:34:32.294544626Z",
+            "decision": "REJECTED"
+          },
+          "quotes": [
+            {
+              "id": "76d3f478-d427-403d-afb1-cc43b1f33033",
+              "version": 1,
+              "status": "REJECTED",
+              "services": [
+                {
+                  "serviceOrderServiceId": "d7212222-3eb9-409d-bfff-050fd6444b74",
+                  "serviceId": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+                  "name": "Revisão de freios — vídeo 1029-133432-deb9",
+                  "priceCents": 15000
+                }
+              ],
+              "parts": [
+                {
+                  "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+                  "name": "Pastilha — vídeo 1029-133432-deb9",
+                  "quantity": 2,
+                  "unitPriceCents": 8900,
+                  "subtotalCents": 17800
+                }
+              ],
+              "totalCents": 32800,
+              "publishedAt": "2026-10-29T13:34:32.263154038Z",
+              "decidedAt": "2026-10-29T13:34:32.294544626Z",
+              "decision": "REJECTED"
+            }
+          ],
+          "history": [
+            {
+              "type": "ORDER_RECEIVED",
+              "status": "RECEIVED",
+              "occurredAt": "2026-10-29T13:34:32.235542314Z"
+            },
+            {
+              "type": "DIAGNOSIS_STARTED",
+              "status": "IN_DIAGNOSIS",
+              "occurredAt": "2026-10-29T13:34:32.246831247Z"
+            },
+            {
+              "type": "QUOTE_PUBLISHED",
+              "status": "AWAITING_APPROVAL",
+              "occurredAt": "2026-10-29T13:34:32.263154038Z"
+            },
+            {
+              "type": "QUOTE_REJECTED",
+              "status": "IN_DIAGNOSIS",
+              "occurredAt": "2026-10-29T13:34:32.294544626Z"
+            }
+          ],
+          "stockConsumedAt": null,
+          "vehicle": {
+            "plate": "VDO5I53",
+            "brand": "Marca Demo",
+            "model": "Hatch Demonstração",
+            "year": 2024
+          }
+        }
+      },
+      "expectedStatus": 200,
+      "assertions": [
+        {
+          "description": "Código HTTP esperado",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "index": 16,
+      "title": "Revisão do preço do serviço desta demonstração",
+      "phase": "Revisão do orçamento",
+      "startedAt": "2026-10-29T13:34:32.308Z",
+      "completedAt": "2026-10-29T13:34:32.313Z",
+      "durationMs": 5.834,
+      "request": {
+        "method": "PATCH",
+        "url": "http://127.0.0.1:18080/api/v1/admin/services/8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+        "headers": {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": "[oculto]"
+        },
+        "body": {
+          "priceCents": 14000
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "no-store",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "body": {
+          "active": true,
+          "createdAt": "2026-10-29T13:34:32.216293723Z",
+          "description": "Serviço sintético desta gravação.",
+          "id": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+          "name": "Revisão de freios — vídeo 1029-133432-deb9",
+          "priceCents": 14000,
+          "updatedAt": "2026-10-29T13:34:32.311514747Z"
+        }
+      },
+      "expectedStatus": 200,
+      "assertions": [
+        {
+          "description": "Código HTTP esperado",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "index": 17,
+      "title": "Publicação da segunda versão do orçamento",
+      "phase": "Ordem de serviço",
+      "startedAt": "2026-10-29T13:34:32.317Z",
+      "completedAt": "2026-10-29T13:34:32.324Z",
+      "durationMs": 6.838,
+      "request": {
+        "method": "POST",
+        "url": "http://127.0.0.1:18080/api/v1/admin/service-orders/ad4c8ecb-e15e-432c-b087-27c858a986ef/quotes",
+        "headers": {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": "[oculto]"
+        },
+        "body": {
+          "expectedVersion": 5
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "no-store",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "body": {
+          "id": "ad4c8ecb-e15e-432c-b087-27c858a986ef",
+          "number": 2,
+          "customerId": "523cd5b3-4263-4485-bd2c-5853898f6fa8",
+          "customerName": "Cliente demonstração vídeo 1029-133432-deb9",
+          "vehicleId": "ba9e536c-60b3-4170-a926-0bcd131c7995",
+          "vehiclePlate": "VDO5I53",
+          "status": "AWAITING_APPROVAL",
+          "version": 6,
+          "createdAt": "2026-10-29T13:34:32.235542314Z",
+          "executionStartedAt": null,
+          "completedAt": null,
+          "deliveredAt": null,
+          "problemDescription": "Ruído ao frear — demonstração com dados sintéticos.",
+          "services": [
+            {
+              "id": "d7212222-3eb9-409d-bfff-050fd6444b74",
+              "serviceId": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+              "name": "Revisão de freios — vídeo 1029-133432-deb9",
+              "status": "NOT_STARTED",
+              "startedAt": null,
+              "completedAt": null
+            }
+          ],
+          "parts": [
+            {
+              "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+              "sku": "VIDEO-1029-133432-DEB9",
+              "name": "Pastilha — vídeo 1029-133432-deb9",
+              "quantity": 2
+            }
+          ],
+          "currentQuote": {
+            "id": "d8d39cc4-fd42-4127-82cf-f34d6a425465",
+            "version": 2,
+            "status": "PENDING",
+            "services": [
+              {
+                "serviceOrderServiceId": "d7212222-3eb9-409d-bfff-050fd6444b74",
+                "serviceId": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+                "name": "Revisão de freios — vídeo 1029-133432-deb9",
+                "priceCents": 14000
+              }
+            ],
+            "parts": [
+              {
+                "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+                "name": "Pastilha — vídeo 1029-133432-deb9",
+                "quantity": 2,
+                "unitPriceCents": 8900,
+                "subtotalCents": 17800
+              }
+            ],
+            "totalCents": 31800,
+            "publishedAt": "2026-10-29T13:34:32.320545613Z",
+            "decidedAt": null,
+            "decision": null
+          },
+          "quotes": [
+            {
+              "id": "76d3f478-d427-403d-afb1-cc43b1f33033",
+              "version": 1,
+              "status": "REJECTED",
+              "services": [
+                {
+                  "serviceOrderServiceId": "d7212222-3eb9-409d-bfff-050fd6444b74",
+                  "serviceId": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+                  "name": "Revisão de freios — vídeo 1029-133432-deb9",
+                  "priceCents": 15000
+                }
+              ],
+              "parts": [
+                {
+                  "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+                  "name": "Pastilha — vídeo 1029-133432-deb9",
+                  "quantity": 2,
+                  "unitPriceCents": 8900,
+                  "subtotalCents": 17800
+                }
+              ],
+              "totalCents": 32800,
+              "publishedAt": "2026-10-29T13:34:32.263154038Z",
+              "decidedAt": "2026-10-29T13:34:32.294544626Z",
+              "decision": "REJECTED"
+            },
+            {
+              "id": "d8d39cc4-fd42-4127-82cf-f34d6a425465",
+              "version": 2,
+              "status": "PENDING",
+              "services": [
+                {
+                  "serviceOrderServiceId": "d7212222-3eb9-409d-bfff-050fd6444b74",
+                  "serviceId": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+                  "name": "Revisão de freios — vídeo 1029-133432-deb9",
+                  "priceCents": 14000
+                }
+              ],
+              "parts": [
+                {
+                  "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+                  "name": "Pastilha — vídeo 1029-133432-deb9",
+                  "quantity": 2,
+                  "unitPriceCents": 8900,
+                  "subtotalCents": 17800
+                }
+              ],
+              "totalCents": 31800,
+              "publishedAt": "2026-10-29T13:34:32.320545613Z",
+              "decidedAt": null,
+              "decision": null
+            }
+          ],
+          "history": [
+            {
+              "type": "ORDER_RECEIVED",
+              "status": "RECEIVED",
+              "occurredAt": "2026-10-29T13:34:32.235542314Z"
+            },
+            {
+              "type": "DIAGNOSIS_STARTED",
+              "status": "IN_DIAGNOSIS",
+              "occurredAt": "2026-10-29T13:34:32.246831247Z"
+            },
+            {
+              "type": "QUOTE_PUBLISHED",
+              "status": "AWAITING_APPROVAL",
+              "occurredAt": "2026-10-29T13:34:32.263154038Z"
+            },
+            {
+              "type": "QUOTE_REJECTED",
+              "status": "IN_DIAGNOSIS",
+              "occurredAt": "2026-10-29T13:34:32.294544626Z"
+            },
+            {
+              "type": "QUOTE_PUBLISHED",
+              "status": "AWAITING_APPROVAL",
+              "occurredAt": "2026-10-29T13:34:32.320545613Z"
+            }
+          ],
+          "stockConsumedAt": null,
+          "vehicle": {
+            "plate": "VDO5I53",
+            "brand": "Marca Demo",
+            "model": "Hatch Demonstração",
+            "year": 2024
+          }
+        }
+      },
+      "expectedStatus": 200,
+      "assertions": [
+        {
+          "description": "Código HTTP esperado",
+          "passed": true
+        },
+        {
+          "description": "Nova versão: 31800 centavos; versão anterior preservada em 32800",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "index": 18,
+      "title": "Cliente recebe a segunda versão do orçamento",
+      "phase": "Acesso do cliente",
+      "startedAt": "2026-10-29T13:34:32.329Z",
+      "completedAt": "2026-10-29T13:34:32.333Z",
+      "durationMs": 3.563,
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:18080/api/v1/customer/service-order",
+        "headers": {
+          "Accept": "application/json",
+          "Authorization": "[oculto]"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "no-store",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "body": {
+          "completedAt": null,
+          "createdAt": "2026-10-29T13:34:32.235542314Z",
+          "currentQuote": {
+            "decidedAt": null,
+            "decision": null,
+            "id": "d8d39cc4-fd42-4127-82cf-f34d6a425465",
+            "parts": [
+              {
+                "name": "Pastilha — vídeo 1029-133432-deb9",
+                "quantity": 2,
+                "subtotalCents": 17800,
+                "unitPriceCents": 8900
+              }
+            ],
+            "publishedAt": "2026-10-29T13:34:32.320545613Z",
+            "services": [
+              {
+                "name": "Revisão de freios — vídeo 1029-133432-deb9",
+                "priceCents": 14000
+              }
+            ],
+            "status": "PENDING",
+            "totalCents": 31800,
+            "version": 2
+          },
+          "deliveredAt": null,
+          "executionStartedAt": null,
+          "history": [
+            {
+              "type": "ORDER_RECEIVED",
+              "status": "RECEIVED",
+              "occurredAt": "2026-10-29T13:34:32.235542314Z"
+            },
+            {
+              "type": "DIAGNOSIS_STARTED",
+              "status": "IN_DIAGNOSIS",
+              "occurredAt": "2026-10-29T13:34:32.246831247Z"
+            },
+            {
+              "type": "QUOTE_PUBLISHED",
+              "status": "AWAITING_APPROVAL",
+              "occurredAt": "2026-10-29T13:34:32.263154038Z"
+            },
+            {
+              "type": "QUOTE_REJECTED",
+              "status": "IN_DIAGNOSIS",
+              "occurredAt": "2026-10-29T13:34:32.294544626Z"
+            },
+            {
+              "type": "QUOTE_PUBLISHED",
+              "status": "AWAITING_APPROVAL",
+              "occurredAt": "2026-10-29T13:34:32.320545613Z"
+            }
+          ],
+          "number": 2,
+          "parts": [
+            {
+              "name": "Pastilha — vídeo 1029-133432-deb9",
+              "quantity": 2
+            }
+          ],
+          "services": [
+            {
+              "completedAt": null,
+              "name": "Revisão de freios — vídeo 1029-133432-deb9",
+              "startedAt": null,
+              "status": "NOT_STARTED"
+            }
+          ],
+          "status": "AWAITING_APPROVAL",
+          "vehicle": {
+            "plate": "VDO5I53",
+            "brand": "Marca Demo",
+            "model": "Hatch Demonstração",
+            "year": 2024
+          }
+        }
+      },
+      "expectedStatus": 200,
+      "assertions": [
+        {
+          "description": "Código HTTP esperado",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "index": 19,
+      "title": "Cliente aprova o orçamento vigente",
+      "phase": "Aprovação",
+      "startedAt": "2026-10-29T13:34:32.336Z",
+      "completedAt": "2026-10-29T13:34:32.342Z",
+      "durationMs": 6.06,
+      "request": {
+        "method": "POST",
+        "url": "http://127.0.0.1:18080/api/v1/customer/service-order/quote-decision",
+        "headers": {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": "[oculto]"
+        },
+        "body": {
+          "quoteId": "d8d39cc4-fd42-4127-82cf-f34d6a425465",
+          "decision": "APPROVED"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "no-store",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "body": {
+          "completedAt": null,
+          "createdAt": "2026-10-29T13:34:32.235542314Z",
+          "currentQuote": {
+            "decidedAt": "2026-10-29T13:34:32.340634008Z",
+            "decision": "APPROVED",
+            "id": "d8d39cc4-fd42-4127-82cf-f34d6a425465",
+            "parts": [
+              {
+                "name": "Pastilha — vídeo 1029-133432-deb9",
+                "quantity": 2,
+                "subtotalCents": 17800,
+                "unitPriceCents": 8900
+              }
+            ],
+            "publishedAt": "2026-10-29T13:34:32.320545613Z",
+            "services": [
+              {
+                "name": "Revisão de freios — vídeo 1029-133432-deb9",
+                "priceCents": 14000
+              }
+            ],
+            "status": "APPROVED",
+            "totalCents": 31800,
+            "version": 2
+          },
+          "deliveredAt": null,
+          "executionStartedAt": null,
+          "history": [
+            {
+              "type": "ORDER_RECEIVED",
+              "status": "RECEIVED",
+              "occurredAt": "2026-10-29T13:34:32.235542314Z"
+            },
+            {
+              "type": "DIAGNOSIS_STARTED",
+              "status": "IN_DIAGNOSIS",
+              "occurredAt": "2026-10-29T13:34:32.246831247Z"
+            },
+            {
+              "type": "QUOTE_PUBLISHED",
+              "status": "AWAITING_APPROVAL",
+              "occurredAt": "2026-10-29T13:34:32.263154038Z"
+            },
+            {
+              "type": "QUOTE_REJECTED",
+              "status": "IN_DIAGNOSIS",
+              "occurredAt": "2026-10-29T13:34:32.294544626Z"
+            },
+            {
+              "type": "QUOTE_PUBLISHED",
+              "status": "AWAITING_APPROVAL",
+              "occurredAt": "2026-10-29T13:34:32.320545613Z"
+            },
+            {
+              "type": "QUOTE_APPROVED",
+              "status": "AWAITING_APPROVAL",
+              "occurredAt": "2026-10-29T13:34:32.340634008Z"
+            }
+          ],
+          "number": 2,
+          "parts": [
+            {
+              "name": "Pastilha — vídeo 1029-133432-deb9",
+              "quantity": 2
+            }
+          ],
+          "services": [
+            {
+              "completedAt": null,
+              "name": "Revisão de freios — vídeo 1029-133432-deb9",
+              "startedAt": null,
+              "status": "NOT_STARTED"
+            }
+          ],
+          "status": "AWAITING_APPROVAL",
+          "vehicle": {
+            "plate": "VDO5I53",
+            "brand": "Marca Demo",
+            "model": "Hatch Demonstração",
+            "year": 2024
+          }
+        }
+      },
+      "expectedStatus": 200,
+      "assertions": [
+        {
+          "description": "Código HTTP esperado",
+          "passed": true
+        },
+        {
+          "description": "Aprovação mantém aguardando início",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "index": 20,
+      "title": "Repetição da mesma aprovação é idempotente",
+      "phase": "Aprovação",
+      "startedAt": "2026-10-29T13:34:32.349Z",
+      "completedAt": "2026-10-29T13:34:32.369Z",
+      "durationMs": 19.833,
+      "request": {
+        "method": "POST",
+        "url": "http://127.0.0.1:18080/api/v1/customer/service-order/quote-decision",
+        "headers": {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": "[oculto]"
+        },
+        "body": {
+          "quoteId": "d8d39cc4-fd42-4127-82cf-f34d6a425465",
+          "decision": "APPROVED"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "no-store",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "body": {
+          "completedAt": null,
+          "createdAt": "2026-10-29T13:34:32.235542314Z",
+          "currentQuote": {
+            "decidedAt": "2026-10-29T13:34:32.340634008Z",
+            "decision": "APPROVED",
+            "id": "d8d39cc4-fd42-4127-82cf-f34d6a425465",
+            "parts": [
+              {
+                "name": "Pastilha — vídeo 1029-133432-deb9",
+                "quantity": 2,
+                "subtotalCents": 17800,
+                "unitPriceCents": 8900
+              }
+            ],
+            "publishedAt": "2026-10-29T13:34:32.320545613Z",
+            "services": [
+              {
+                "name": "Revisão de freios — vídeo 1029-133432-deb9",
+                "priceCents": 14000
+              }
+            ],
+            "status": "APPROVED",
+            "totalCents": 31800,
+            "version": 2
+          },
+          "deliveredAt": null,
+          "executionStartedAt": null,
+          "history": [
+            {
+              "type": "ORDER_RECEIVED",
+              "status": "RECEIVED",
+              "occurredAt": "2026-10-29T13:34:32.235542314Z"
+            },
+            {
+              "type": "DIAGNOSIS_STARTED",
+              "status": "IN_DIAGNOSIS",
+              "occurredAt": "2026-10-29T13:34:32.246831247Z"
+            },
+            {
+              "type": "QUOTE_PUBLISHED",
+              "status": "AWAITING_APPROVAL",
+              "occurredAt": "2026-10-29T13:34:32.263154038Z"
+            },
+            {
+              "type": "QUOTE_REJECTED",
+              "status": "IN_DIAGNOSIS",
+              "occurredAt": "2026-10-29T13:34:32.294544626Z"
+            },
+            {
+              "type": "QUOTE_PUBLISHED",
+              "status": "AWAITING_APPROVAL",
+              "occurredAt": "2026-10-29T13:34:32.320545613Z"
+            },
+            {
+              "type": "QUOTE_APPROVED",
+              "status": "AWAITING_APPROVAL",
+              "occurredAt": "2026-10-29T13:34:32.340634008Z"
+            }
+          ],
+          "number": 2,
+          "parts": [
+            {
+              "name": "Pastilha — vídeo 1029-133432-deb9",
+              "quantity": 2
+            }
+          ],
+          "services": [
+            {
+              "completedAt": null,
+              "name": "Revisão de freios — vídeo 1029-133432-deb9",
+              "startedAt": null,
+              "status": "NOT_STARTED"
+            }
+          ],
+          "status": "AWAITING_APPROVAL",
+          "vehicle": {
+            "plate": "VDO5I53",
+            "brand": "Marca Demo",
+            "model": "Hatch Demonstração",
+            "year": 2024
+          }
+        }
+      },
+      "expectedStatus": 200,
+      "assertions": [
+        {
+          "description": "Código HTTP esperado",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "index": 21,
+      "title": "Oficina verifica a aprovação e a versão da OS",
+      "phase": "Aprovação",
+      "startedAt": "2026-10-29T13:34:32.373Z",
+      "completedAt": "2026-10-29T13:34:32.400Z",
+      "durationMs": 28.307,
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:18080/api/v1/admin/service-orders/ad4c8ecb-e15e-432c-b087-27c858a986ef",
+        "headers": {
+          "Accept": "application/json",
+          "Authorization": "[oculto]"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "no-store",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "body": {
+          "id": "ad4c8ecb-e15e-432c-b087-27c858a986ef",
+          "number": 2,
+          "customerId": "523cd5b3-4263-4485-bd2c-5853898f6fa8",
+          "customerName": "Cliente demonstração vídeo 1029-133432-deb9",
+          "vehicleId": "ba9e536c-60b3-4170-a926-0bcd131c7995",
+          "vehiclePlate": "VDO5I53",
+          "status": "AWAITING_APPROVAL",
+          "version": 7,
+          "createdAt": "2026-10-29T13:34:32.235542314Z",
+          "executionStartedAt": null,
+          "completedAt": null,
+          "deliveredAt": null,
+          "problemDescription": "Ruído ao frear — demonstração com dados sintéticos.",
+          "services": [
+            {
+              "id": "d7212222-3eb9-409d-bfff-050fd6444b74",
+              "serviceId": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+              "name": "Revisão de freios — vídeo 1029-133432-deb9",
+              "status": "NOT_STARTED",
+              "startedAt": null,
+              "completedAt": null
+            }
+          ],
+          "parts": [
+            {
+              "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+              "sku": "VIDEO-1029-133432-DEB9",
+              "name": "Pastilha — vídeo 1029-133432-deb9",
+              "quantity": 2
+            }
+          ],
+          "currentQuote": {
+            "id": "d8d39cc4-fd42-4127-82cf-f34d6a425465",
+            "version": 2,
+            "status": "APPROVED",
+            "services": [
+              {
+                "serviceOrderServiceId": "d7212222-3eb9-409d-bfff-050fd6444b74",
+                "serviceId": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+                "name": "Revisão de freios — vídeo 1029-133432-deb9",
+                "priceCents": 14000
+              }
+            ],
+            "parts": [
+              {
+                "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+                "name": "Pastilha — vídeo 1029-133432-deb9",
+                "quantity": 2,
+                "unitPriceCents": 8900,
+                "subtotalCents": 17800
+              }
+            ],
+            "totalCents": 31800,
+            "publishedAt": "2026-10-29T13:34:32.320545613Z",
+            "decidedAt": "2026-10-29T13:34:32.340634008Z",
+            "decision": "APPROVED"
+          },
+          "quotes": [
+            {
+              "id": "76d3f478-d427-403d-afb1-cc43b1f33033",
+              "version": 1,
+              "status": "REJECTED",
+              "services": [
+                {
+                  "serviceOrderServiceId": "d7212222-3eb9-409d-bfff-050fd6444b74",
+                  "serviceId": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+                  "name": "Revisão de freios — vídeo 1029-133432-deb9",
+                  "priceCents": 15000
+                }
+              ],
+              "parts": [
+                {
+                  "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+                  "name": "Pastilha — vídeo 1029-133432-deb9",
+                  "quantity": 2,
+                  "unitPriceCents": 8900,
+                  "subtotalCents": 17800
+                }
+              ],
+              "totalCents": 32800,
+              "publishedAt": "2026-10-29T13:34:32.263154038Z",
+              "decidedAt": "2026-10-29T13:34:32.294544626Z",
+              "decision": "REJECTED"
+            },
+            {
+              "id": "d8d39cc4-fd42-4127-82cf-f34d6a425465",
+              "version": 2,
+              "status": "APPROVED",
+              "services": [
+                {
+                  "serviceOrderServiceId": "d7212222-3eb9-409d-bfff-050fd6444b74",
+                  "serviceId": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+                  "name": "Revisão de freios — vídeo 1029-133432-deb9",
+                  "priceCents": 14000
+                }
+              ],
+              "parts": [
+                {
+                  "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+                  "name": "Pastilha — vídeo 1029-133432-deb9",
+                  "quantity": 2,
+                  "unitPriceCents": 8900,
+                  "subtotalCents": 17800
+                }
+              ],
+              "totalCents": 31800,
+              "publishedAt": "2026-10-29T13:34:32.320545613Z",
+              "decidedAt": "2026-10-29T13:34:32.340634008Z",
+              "decision": "APPROVED"
+            }
+          ],
+          "history": [
+            {
+              "type": "ORDER_RECEIVED",
+              "status": "RECEIVED",
+              "occurredAt": "2026-10-29T13:34:32.235542314Z"
+            },
+            {
+              "type": "DIAGNOSIS_STARTED",
+              "status": "IN_DIAGNOSIS",
+              "occurredAt": "2026-10-29T13:34:32.246831247Z"
+            },
+            {
+              "type": "QUOTE_PUBLISHED",
+              "status": "AWAITING_APPROVAL",
+              "occurredAt": "2026-10-29T13:34:32.263154038Z"
+            },
+            {
+              "type": "QUOTE_REJECTED",
+              "status": "IN_DIAGNOSIS",
+              "occurredAt": "2026-10-29T13:34:32.294544626Z"
+            },
+            {
+              "type": "QUOTE_PUBLISHED",
+              "status": "AWAITING_APPROVAL",
+              "occurredAt": "2026-10-29T13:34:32.320545613Z"
+            },
+            {
+              "type": "QUOTE_APPROVED",
+              "status": "AWAITING_APPROVAL",
+              "occurredAt": "2026-10-29T13:34:32.340634008Z"
+            }
+          ],
+          "stockConsumedAt": null,
+          "vehicle": {
+            "plate": "VDO5I53",
+            "brand": "Marca Demo",
+            "model": "Hatch Demonstração",
+            "year": 2024
+          }
+        }
+      },
+      "expectedStatus": 200,
+      "assertions": [
+        {
+          "description": "Código HTTP esperado",
+          "passed": true
+        },
+        {
+          "description": "Aprovação repetida não incrementou a versão",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "index": 22,
+      "title": "Estoque ainda não foi baixado na aprovação",
+      "phase": "Estoque e execução",
+      "startedAt": "2026-10-29T13:34:32.408Z",
+      "completedAt": "2026-10-29T13:34:32.412Z",
+      "durationMs": 4.109,
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:18080/api/v1/admin/inventory-items/125c0ba1-bae2-4200-84a2-eb1142b582be",
+        "headers": {
+          "Accept": "application/json",
+          "Authorization": "[oculto]"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "no-store",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "body": {
+          "active": true,
+          "balance": 8,
+          "createdAt": "2026-10-29T13:34:32.223550509Z",
+          "id": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+          "name": "Pastilha — vídeo 1029-133432-deb9",
+          "priceCents": 8900,
+          "sku": "VIDEO-1029-133432-DEB9",
+          "type": "PART",
+          "updatedAt": "2026-10-29T13:34:32.223550509Z"
+        }
+      },
+      "expectedStatus": 200,
+      "assertions": [
+        {
+          "description": "Código HTTP esperado",
+          "passed": true
+        },
+        {
+          "description": "Aprovação não reserva nem consome estoque",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "index": 23,
+      "title": "Primeiro serviço inicia a execução e baixa as peças",
+      "phase": "Ordem de serviço",
+      "startedAt": "2026-10-29T13:34:32.419Z",
+      "completedAt": "2026-10-29T13:34:32.426Z",
+      "durationMs": 7.237,
+      "request": {
+        "method": "POST",
+        "url": "http://127.0.0.1:18080/api/v1/admin/service-orders/ad4c8ecb-e15e-432c-b087-27c858a986ef/services/d7212222-3eb9-409d-bfff-050fd6444b74/start",
+        "headers": {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": "[oculto]"
+        },
+        "body": {
+          "expectedVersion": 7
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "no-store",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "body": {
+          "id": "ad4c8ecb-e15e-432c-b087-27c858a986ef",
+          "number": 2,
+          "customerId": "523cd5b3-4263-4485-bd2c-5853898f6fa8",
+          "customerName": "Cliente demonstração vídeo 1029-133432-deb9",
+          "vehicleId": "ba9e536c-60b3-4170-a926-0bcd131c7995",
+          "vehiclePlate": "VDO5I53",
+          "status": "IN_EXECUTION",
+          "version": 8,
+          "createdAt": "2026-10-29T13:34:32.235542314Z",
+          "executionStartedAt": "2026-10-29T13:34:32.422940416Z",
+          "completedAt": null,
+          "deliveredAt": null,
+          "problemDescription": "Ruído ao frear — demonstração com dados sintéticos.",
+          "services": [
+            {
+              "id": "d7212222-3eb9-409d-bfff-050fd6444b74",
+              "serviceId": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+              "name": "Revisão de freios — vídeo 1029-133432-deb9",
+              "status": "IN_PROGRESS",
+              "startedAt": "2026-10-29T13:34:32.422940416Z",
+              "completedAt": null
+            }
+          ],
+          "parts": [
+            {
+              "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+              "sku": "VIDEO-1029-133432-DEB9",
+              "name": "Pastilha — vídeo 1029-133432-deb9",
+              "quantity": 2
+            }
+          ],
+          "currentQuote": {
+            "id": "d8d39cc4-fd42-4127-82cf-f34d6a425465",
+            "version": 2,
+            "status": "APPROVED",
+            "services": [
+              {
+                "serviceOrderServiceId": "d7212222-3eb9-409d-bfff-050fd6444b74",
+                "serviceId": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+                "name": "Revisão de freios — vídeo 1029-133432-deb9",
+                "priceCents": 14000
+              }
+            ],
+            "parts": [
+              {
+                "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+                "name": "Pastilha — vídeo 1029-133432-deb9",
+                "quantity": 2,
+                "unitPriceCents": 8900,
+                "subtotalCents": 17800
+              }
+            ],
+            "totalCents": 31800,
+            "publishedAt": "2026-10-29T13:34:32.320545613Z",
+            "decidedAt": "2026-10-29T13:34:32.340634008Z",
+            "decision": "APPROVED"
+          },
+          "quotes": [
+            {
+              "id": "76d3f478-d427-403d-afb1-cc43b1f33033",
+              "version": 1,
+              "status": "REJECTED",
+              "services": [
+                {
+                  "serviceOrderServiceId": "d7212222-3eb9-409d-bfff-050fd6444b74",
+                  "serviceId": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+                  "name": "Revisão de freios — vídeo 1029-133432-deb9",
+                  "priceCents": 15000
+                }
+              ],
+              "parts": [
+                {
+                  "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+                  "name": "Pastilha — vídeo 1029-133432-deb9",
+                  "quantity": 2,
+                  "unitPriceCents": 8900,
+                  "subtotalCents": 17800
+                }
+              ],
+              "totalCents": 32800,
+              "publishedAt": "2026-10-29T13:34:32.263154038Z",
+              "decidedAt": "2026-10-29T13:34:32.294544626Z",
+              "decision": "REJECTED"
+            },
+            {
+              "id": "d8d39cc4-fd42-4127-82cf-f34d6a425465",
+              "version": 2,
+              "status": "APPROVED",
+              "services": [
+                {
+                  "serviceOrderServiceId": "d7212222-3eb9-409d-bfff-050fd6444b74",
+                  "serviceId": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+                  "name": "Revisão de freios — vídeo 1029-133432-deb9",
+                  "priceCents": 14000
+                }
+              ],
+              "parts": [
+                {
+                  "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+                  "name": "Pastilha — vídeo 1029-133432-deb9",
+                  "quantity": 2,
+                  "unitPriceCents": 8900,
+                  "subtotalCents": 17800
+                }
+              ],
+              "totalCents": 31800,
+              "publishedAt": "2026-10-29T13:34:32.320545613Z",
+              "decidedAt": "2026-10-29T13:34:32.340634008Z",
+              "decision": "APPROVED"
+            }
+          ],
+          "history": [
+            {
+              "type": "ORDER_RECEIVED",
+              "status": "RECEIVED",
+              "occurredAt": "2026-10-29T13:34:32.235542314Z"
+            },
+            {
+              "type": "DIAGNOSIS_STARTED",
+              "status": "IN_DIAGNOSIS",
+              "occurredAt": "2026-10-29T13:34:32.246831247Z"
+            },
+            {
+              "type": "QUOTE_PUBLISHED",
+              "status": "AWAITING_APPROVAL",
+              "occurredAt": "2026-10-29T13:34:32.263154038Z"
+            },
+            {
+              "type": "QUOTE_REJECTED",
+              "status": "IN_DIAGNOSIS",
+              "occurredAt": "2026-10-29T13:34:32.294544626Z"
+            },
+            {
+              "type": "QUOTE_PUBLISHED",
+              "status": "AWAITING_APPROVAL",
+              "occurredAt": "2026-10-29T13:34:32.320545613Z"
+            },
+            {
+              "type": "QUOTE_APPROVED",
+              "status": "AWAITING_APPROVAL",
+              "occurredAt": "2026-10-29T13:34:32.340634008Z"
+            },
+            {
+              "type": "SERVICE_STARTED",
+              "status": "IN_EXECUTION",
+              "occurredAt": "2026-10-29T13:34:32.422940416Z"
+            }
+          ],
+          "stockConsumedAt": "2026-10-29T13:34:32.422940416Z",
+          "vehicle": {
+            "plate": "VDO5I53",
+            "brand": "Marca Demo",
+            "model": "Hatch Demonstração",
+            "year": 2024
+          }
+        }
+      },
+      "expectedStatus": 200,
+      "assertions": [
+        {
+          "description": "Código HTTP esperado",
+          "passed": true
+        },
+        {
+          "description": "Serviço IN_PROGRESS e OS IN_EXECUTION",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "index": 24,
+      "title": "Conferência do estoque após o início",
+      "phase": "Estoque e execução",
+      "startedAt": "2026-10-29T13:34:32.435Z",
+      "completedAt": "2026-10-29T13:34:32.439Z",
+      "durationMs": 3.327,
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:18080/api/v1/admin/inventory-items/125c0ba1-bae2-4200-84a2-eb1142b582be",
+        "headers": {
+          "Accept": "application/json",
+          "Authorization": "[oculto]"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "no-store",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "body": {
+          "active": true,
+          "balance": 6,
+          "createdAt": "2026-10-29T13:34:32.223550509Z",
+          "id": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+          "name": "Pastilha — vídeo 1029-133432-deb9",
+          "priceCents": 8900,
+          "sku": "VIDEO-1029-133432-DEB9",
+          "type": "PART",
+          "updatedAt": "2026-10-29T13:34:32.422940416Z"
+        }
+      },
+      "expectedStatus": 200,
+      "assertions": [
+        {
+          "description": "Código HTTP esperado",
+          "passed": true
+        },
+        {
+          "description": "Saldo passou de 8 para 6 unidades",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "index": 25,
+      "title": "Auditoria dos movimentos de estoque",
+      "phase": "Estoque e execução",
+      "startedAt": "2026-10-29T13:34:32.445Z",
+      "completedAt": "2026-10-29T13:34:32.465Z",
+      "durationMs": 19.734,
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:18080/api/v1/admin/inventory-items/125c0ba1-bae2-4200-84a2-eb1142b582be/movements",
+        "headers": {
+          "Accept": "application/json",
+          "Authorization": "[oculto]"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "no-store",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "body": {
+          "data": [
+            {
+              "id": "8aa42633-1b21-4832-8fef-b6feac8839fb",
+              "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+              "occurredAt": "2026-10-29T13:34:32.422940416Z",
+              "quantityDelta": -2,
+              "reason": "Consumo de peças da OS",
+              "serviceOrderId": "ad4c8ecb-e15e-432c-b087-27c858a986ef",
+              "type": "SERVICE_ORDER_CONSUMPTION"
+            },
+            {
+              "id": "ca04eab6-6ab1-44a8-a3ea-266e6ae79d1d",
+              "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+              "occurredAt": "2026-10-29T13:34:32.223550509Z",
+              "quantityDelta": 8,
+              "reason": "Saldo inicial",
+              "serviceOrderId": null,
+              "type": "OPENING"
+            }
+          ],
+          "page": 1,
+          "pageSize": 20,
+          "total": 2
+        }
+      },
+      "expectedStatus": 200,
+      "assertions": [
+        {
+          "description": "Código HTTP esperado",
+          "passed": true
+        },
+        {
+          "description": "Uma única baixa de 2 unidades vinculada à OS",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "index": 26,
+      "title": "Repetir início do serviço retorna conflito",
+      "phase": "Ordem de serviço",
+      "startedAt": "2026-10-29T13:34:32.474Z",
+      "completedAt": "2026-10-29T13:34:32.485Z",
+      "durationMs": 10.466,
+      "request": {
+        "method": "POST",
+        "url": "http://127.0.0.1:18080/api/v1/admin/service-orders/ad4c8ecb-e15e-432c-b087-27c858a986ef/services/d7212222-3eb9-409d-bfff-050fd6444b74/start",
+        "headers": {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": "[oculto]"
+        },
+        "body": {
+          "expectedVersion": 8
+        }
+      },
+      "response": {
+        "status": 409,
+        "headers": {
+          "Content-Type": "application/problem+json",
+          "Cache-Control": "no-store",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "body": {
+          "code": "INVALID_STATE",
+          "detail": "Serviço já iniciado.",
+          "status": 409,
+          "title": "Conflict",
+          "type": "about:blank"
+        }
+      },
+      "expectedStatus": 409,
+      "assertions": [
+        {
+          "description": "Código HTTP esperado",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "index": 27,
+      "title": "Conclusão individual do serviço",
+      "phase": "Ordem de serviço",
+      "startedAt": "2026-10-29T13:34:32.740Z",
+      "completedAt": "2026-10-29T13:34:32.745Z",
+      "durationMs": 5.885,
+      "request": {
+        "method": "POST",
+        "url": "http://127.0.0.1:18080/api/v1/admin/service-orders/ad4c8ecb-e15e-432c-b087-27c858a986ef/services/d7212222-3eb9-409d-bfff-050fd6444b74/complete",
+        "headers": {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": "[oculto]"
+        },
+        "body": {
+          "expectedVersion": 8
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "no-store",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "body": {
+          "id": "ad4c8ecb-e15e-432c-b087-27c858a986ef",
+          "number": 2,
+          "customerId": "523cd5b3-4263-4485-bd2c-5853898f6fa8",
+          "customerName": "Cliente demonstração vídeo 1029-133432-deb9",
+          "vehicleId": "ba9e536c-60b3-4170-a926-0bcd131c7995",
+          "vehiclePlate": "VDO5I53",
+          "status": "IN_EXECUTION",
+          "version": 9,
+          "createdAt": "2026-10-29T13:34:32.235542314Z",
+          "executionStartedAt": "2026-10-29T13:34:32.422940416Z",
+          "completedAt": null,
+          "deliveredAt": null,
+          "problemDescription": "Ruído ao frear — demonstração com dados sintéticos.",
+          "services": [
+            {
+              "id": "d7212222-3eb9-409d-bfff-050fd6444b74",
+              "serviceId": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+              "name": "Revisão de freios — vídeo 1029-133432-deb9",
+              "status": "COMPLETED",
+              "startedAt": "2026-10-29T13:34:32.422940416Z",
+              "completedAt": "2026-10-29T13:34:32.743606347Z"
+            }
+          ],
+          "parts": [
+            {
+              "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+              "sku": "VIDEO-1029-133432-DEB9",
+              "name": "Pastilha — vídeo 1029-133432-deb9",
+              "quantity": 2
+            }
+          ],
+          "currentQuote": {
+            "id": "d8d39cc4-fd42-4127-82cf-f34d6a425465",
+            "version": 2,
+            "status": "APPROVED",
+            "services": [
+              {
+                "serviceOrderServiceId": "d7212222-3eb9-409d-bfff-050fd6444b74",
+                "serviceId": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+                "name": "Revisão de freios — vídeo 1029-133432-deb9",
+                "priceCents": 14000
+              }
+            ],
+            "parts": [
+              {
+                "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+                "name": "Pastilha — vídeo 1029-133432-deb9",
+                "quantity": 2,
+                "unitPriceCents": 8900,
+                "subtotalCents": 17800
+              }
+            ],
+            "totalCents": 31800,
+            "publishedAt": "2026-10-29T13:34:32.320545613Z",
+            "decidedAt": "2026-10-29T13:34:32.340634008Z",
+            "decision": "APPROVED"
+          },
+          "quotes": [
+            {
+              "id": "76d3f478-d427-403d-afb1-cc43b1f33033",
+              "version": 1,
+              "status": "REJECTED",
+              "services": [
+                {
+                  "serviceOrderServiceId": "d7212222-3eb9-409d-bfff-050fd6444b74",
+                  "serviceId": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+                  "name": "Revisão de freios — vídeo 1029-133432-deb9",
+                  "priceCents": 15000
+                }
+              ],
+              "parts": [
+                {
+                  "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+                  "name": "Pastilha — vídeo 1029-133432-deb9",
+                  "quantity": 2,
+                  "unitPriceCents": 8900,
+                  "subtotalCents": 17800
+                }
+              ],
+              "totalCents": 32800,
+              "publishedAt": "2026-10-29T13:34:32.263154038Z",
+              "decidedAt": "2026-10-29T13:34:32.294544626Z",
+              "decision": "REJECTED"
+            },
+            {
+              "id": "d8d39cc4-fd42-4127-82cf-f34d6a425465",
+              "version": 2,
+              "status": "APPROVED",
+              "services": [
+                {
+                  "serviceOrderServiceId": "d7212222-3eb9-409d-bfff-050fd6444b74",
+                  "serviceId": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+                  "name": "Revisão de freios — vídeo 1029-133432-deb9",
+                  "priceCents": 14000
+                }
+              ],
+              "parts": [
+                {
+                  "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+                  "name": "Pastilha — vídeo 1029-133432-deb9",
+                  "quantity": 2,
+                  "unitPriceCents": 8900,
+                  "subtotalCents": 17800
+                }
+              ],
+              "totalCents": 31800,
+              "publishedAt": "2026-10-29T13:34:32.320545613Z",
+              "decidedAt": "2026-10-29T13:34:32.340634008Z",
+              "decision": "APPROVED"
+            }
+          ],
+          "history": [
+            {
+              "type": "ORDER_RECEIVED",
+              "status": "RECEIVED",
+              "occurredAt": "2026-10-29T13:34:32.235542314Z"
+            },
+            {
+              "type": "DIAGNOSIS_STARTED",
+              "status": "IN_DIAGNOSIS",
+              "occurredAt": "2026-10-29T13:34:32.246831247Z"
+            },
+            {
+              "type": "QUOTE_PUBLISHED",
+              "status": "AWAITING_APPROVAL",
+              "occurredAt": "2026-10-29T13:34:32.263154038Z"
+            },
+            {
+              "type": "QUOTE_REJECTED",
+              "status": "IN_DIAGNOSIS",
+              "occurredAt": "2026-10-29T13:34:32.294544626Z"
+            },
+            {
+              "type": "QUOTE_PUBLISHED",
+              "status": "AWAITING_APPROVAL",
+              "occurredAt": "2026-10-29T13:34:32.320545613Z"
+            },
+            {
+              "type": "QUOTE_APPROVED",
+              "status": "AWAITING_APPROVAL",
+              "occurredAt": "2026-10-29T13:34:32.340634008Z"
+            },
+            {
+              "type": "SERVICE_STARTED",
+              "status": "IN_EXECUTION",
+              "occurredAt": "2026-10-29T13:34:32.422940416Z"
+            },
+            {
+              "type": "SERVICE_COMPLETED",
+              "status": "IN_EXECUTION",
+              "occurredAt": "2026-10-29T13:34:32.743606347Z"
+            }
+          ],
+          "stockConsumedAt": "2026-10-29T13:34:32.422940416Z",
+          "vehicle": {
+            "plate": "VDO5I53",
+            "brand": "Marca Demo",
+            "model": "Hatch Demonstração",
+            "year": 2024
+          }
+        }
+      },
+      "expectedStatus": 200,
+      "assertions": [
+        {
+          "description": "Código HTTP esperado",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "index": 28,
+      "title": "Finalização explícita da OS: COMPLETED",
+      "phase": "Ordem de serviço",
+      "startedAt": "2026-10-29T13:34:32.750Z",
+      "completedAt": "2026-10-29T13:34:32.756Z",
+      "durationMs": 5.725,
+      "request": {
+        "method": "POST",
+        "url": "http://127.0.0.1:18080/api/v1/admin/service-orders/ad4c8ecb-e15e-432c-b087-27c858a986ef/complete",
+        "headers": {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": "[oculto]"
+        },
+        "body": {
+          "expectedVersion": 9
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "no-store",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "body": {
+          "id": "ad4c8ecb-e15e-432c-b087-27c858a986ef",
+          "number": 2,
+          "customerId": "523cd5b3-4263-4485-bd2c-5853898f6fa8",
+          "customerName": "Cliente demonstração vídeo 1029-133432-deb9",
+          "vehicleId": "ba9e536c-60b3-4170-a926-0bcd131c7995",
+          "vehiclePlate": "VDO5I53",
+          "status": "COMPLETED",
+          "version": 10,
+          "createdAt": "2026-10-29T13:34:32.235542314Z",
+          "executionStartedAt": "2026-10-29T13:34:32.422940416Z",
+          "completedAt": "2026-10-29T13:34:32.753962186Z",
+          "deliveredAt": null,
+          "problemDescription": "Ruído ao frear — demonstração com dados sintéticos.",
+          "services": [
+            {
+              "id": "d7212222-3eb9-409d-bfff-050fd6444b74",
+              "serviceId": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+              "name": "Revisão de freios — vídeo 1029-133432-deb9",
+              "status": "COMPLETED",
+              "startedAt": "2026-10-29T13:34:32.422940416Z",
+              "completedAt": "2026-10-29T13:34:32.743606347Z"
+            }
+          ],
+          "parts": [
+            {
+              "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+              "sku": "VIDEO-1029-133432-DEB9",
+              "name": "Pastilha — vídeo 1029-133432-deb9",
+              "quantity": 2
+            }
+          ],
+          "currentQuote": {
+            "id": "d8d39cc4-fd42-4127-82cf-f34d6a425465",
+            "version": 2,
+            "status": "APPROVED",
+            "services": [
+              {
+                "serviceOrderServiceId": "d7212222-3eb9-409d-bfff-050fd6444b74",
+                "serviceId": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+                "name": "Revisão de freios — vídeo 1029-133432-deb9",
+                "priceCents": 14000
+              }
+            ],
+            "parts": [
+              {
+                "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+                "name": "Pastilha — vídeo 1029-133432-deb9",
+                "quantity": 2,
+                "unitPriceCents": 8900,
+                "subtotalCents": 17800
+              }
+            ],
+            "totalCents": 31800,
+            "publishedAt": "2026-10-29T13:34:32.320545613Z",
+            "decidedAt": "2026-10-29T13:34:32.340634008Z",
+            "decision": "APPROVED"
+          },
+          "quotes": [
+            {
+              "id": "76d3f478-d427-403d-afb1-cc43b1f33033",
+              "version": 1,
+              "status": "REJECTED",
+              "services": [
+                {
+                  "serviceOrderServiceId": "d7212222-3eb9-409d-bfff-050fd6444b74",
+                  "serviceId": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+                  "name": "Revisão de freios — vídeo 1029-133432-deb9",
+                  "priceCents": 15000
+                }
+              ],
+              "parts": [
+                {
+                  "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+                  "name": "Pastilha — vídeo 1029-133432-deb9",
+                  "quantity": 2,
+                  "unitPriceCents": 8900,
+                  "subtotalCents": 17800
+                }
+              ],
+              "totalCents": 32800,
+              "publishedAt": "2026-10-29T13:34:32.263154038Z",
+              "decidedAt": "2026-10-29T13:34:32.294544626Z",
+              "decision": "REJECTED"
+            },
+            {
+              "id": "d8d39cc4-fd42-4127-82cf-f34d6a425465",
+              "version": 2,
+              "status": "APPROVED",
+              "services": [
+                {
+                  "serviceOrderServiceId": "d7212222-3eb9-409d-bfff-050fd6444b74",
+                  "serviceId": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+                  "name": "Revisão de freios — vídeo 1029-133432-deb9",
+                  "priceCents": 14000
+                }
+              ],
+              "parts": [
+                {
+                  "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+                  "name": "Pastilha — vídeo 1029-133432-deb9",
+                  "quantity": 2,
+                  "unitPriceCents": 8900,
+                  "subtotalCents": 17800
+                }
+              ],
+              "totalCents": 31800,
+              "publishedAt": "2026-10-29T13:34:32.320545613Z",
+              "decidedAt": "2026-10-29T13:34:32.340634008Z",
+              "decision": "APPROVED"
+            }
+          ],
+          "history": [
+            {
+              "type": "ORDER_RECEIVED",
+              "status": "RECEIVED",
+              "occurredAt": "2026-10-29T13:34:32.235542314Z"
+            },
+            {
+              "type": "DIAGNOSIS_STARTED",
+              "status": "IN_DIAGNOSIS",
+              "occurredAt": "2026-10-29T13:34:32.246831247Z"
+            },
+            {
+              "type": "QUOTE_PUBLISHED",
+              "status": "AWAITING_APPROVAL",
+              "occurredAt": "2026-10-29T13:34:32.263154038Z"
+            },
+            {
+              "type": "QUOTE_REJECTED",
+              "status": "IN_DIAGNOSIS",
+              "occurredAt": "2026-10-29T13:34:32.294544626Z"
+            },
+            {
+              "type": "QUOTE_PUBLISHED",
+              "status": "AWAITING_APPROVAL",
+              "occurredAt": "2026-10-29T13:34:32.320545613Z"
+            },
+            {
+              "type": "QUOTE_APPROVED",
+              "status": "AWAITING_APPROVAL",
+              "occurredAt": "2026-10-29T13:34:32.340634008Z"
+            },
+            {
+              "type": "SERVICE_STARTED",
+              "status": "IN_EXECUTION",
+              "occurredAt": "2026-10-29T13:34:32.422940416Z"
+            },
+            {
+              "type": "SERVICE_COMPLETED",
+              "status": "IN_EXECUTION",
+              "occurredAt": "2026-10-29T13:34:32.743606347Z"
+            },
+            {
+              "type": "ORDER_COMPLETED",
+              "status": "COMPLETED",
+              "occurredAt": "2026-10-29T13:34:32.753962186Z"
+            }
+          ],
+          "stockConsumedAt": "2026-10-29T13:34:32.422940416Z",
+          "vehicle": {
+            "plate": "VDO5I53",
+            "brand": "Marca Demo",
+            "model": "Hatch Demonstração",
+            "year": 2024
+          }
+        }
+      },
+      "expectedStatus": 200,
+      "assertions": [
+        {
+          "description": "Código HTTP esperado",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "index": 29,
+      "title": "Entrega ao cliente: DELIVERED",
+      "phase": "Ordem de serviço",
+      "startedAt": "2026-10-29T13:34:32.759Z",
+      "completedAt": "2026-10-29T13:34:32.766Z",
+      "durationMs": 6.359,
+      "request": {
+        "method": "POST",
+        "url": "http://127.0.0.1:18080/api/v1/admin/service-orders/ad4c8ecb-e15e-432c-b087-27c858a986ef/deliver",
+        "headers": {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": "[oculto]"
+        },
+        "body": {
+          "expectedVersion": 10
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "no-store",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "body": {
+          "id": "ad4c8ecb-e15e-432c-b087-27c858a986ef",
+          "number": 2,
+          "customerId": "523cd5b3-4263-4485-bd2c-5853898f6fa8",
+          "customerName": "Cliente demonstração vídeo 1029-133432-deb9",
+          "vehicleId": "ba9e536c-60b3-4170-a926-0bcd131c7995",
+          "vehiclePlate": "VDO5I53",
+          "status": "DELIVERED",
+          "version": 11,
+          "createdAt": "2026-10-29T13:34:32.235542314Z",
+          "executionStartedAt": "2026-10-29T13:34:32.422940416Z",
+          "completedAt": "2026-10-29T13:34:32.753962186Z",
+          "deliveredAt": "2026-10-29T13:34:32.763532309Z",
+          "problemDescription": "Ruído ao frear — demonstração com dados sintéticos.",
+          "services": [
+            {
+              "id": "d7212222-3eb9-409d-bfff-050fd6444b74",
+              "serviceId": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+              "name": "Revisão de freios — vídeo 1029-133432-deb9",
+              "status": "COMPLETED",
+              "startedAt": "2026-10-29T13:34:32.422940416Z",
+              "completedAt": "2026-10-29T13:34:32.743606347Z"
+            }
+          ],
+          "parts": [
+            {
+              "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+              "sku": "VIDEO-1029-133432-DEB9",
+              "name": "Pastilha — vídeo 1029-133432-deb9",
+              "quantity": 2
+            }
+          ],
+          "currentQuote": {
+            "id": "d8d39cc4-fd42-4127-82cf-f34d6a425465",
+            "version": 2,
+            "status": "APPROVED",
+            "services": [
+              {
+                "serviceOrderServiceId": "d7212222-3eb9-409d-bfff-050fd6444b74",
+                "serviceId": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+                "name": "Revisão de freios — vídeo 1029-133432-deb9",
+                "priceCents": 14000
+              }
+            ],
+            "parts": [
+              {
+                "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+                "name": "Pastilha — vídeo 1029-133432-deb9",
+                "quantity": 2,
+                "unitPriceCents": 8900,
+                "subtotalCents": 17800
+              }
+            ],
+            "totalCents": 31800,
+            "publishedAt": "2026-10-29T13:34:32.320545613Z",
+            "decidedAt": "2026-10-29T13:34:32.340634008Z",
+            "decision": "APPROVED"
+          },
+          "quotes": [
+            {
+              "id": "76d3f478-d427-403d-afb1-cc43b1f33033",
+              "version": 1,
+              "status": "REJECTED",
+              "services": [
+                {
+                  "serviceOrderServiceId": "d7212222-3eb9-409d-bfff-050fd6444b74",
+                  "serviceId": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+                  "name": "Revisão de freios — vídeo 1029-133432-deb9",
+                  "priceCents": 15000
+                }
+              ],
+              "parts": [
+                {
+                  "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+                  "name": "Pastilha — vídeo 1029-133432-deb9",
+                  "quantity": 2,
+                  "unitPriceCents": 8900,
+                  "subtotalCents": 17800
+                }
+              ],
+              "totalCents": 32800,
+              "publishedAt": "2026-10-29T13:34:32.263154038Z",
+              "decidedAt": "2026-10-29T13:34:32.294544626Z",
+              "decision": "REJECTED"
+            },
+            {
+              "id": "d8d39cc4-fd42-4127-82cf-f34d6a425465",
+              "version": 2,
+              "status": "APPROVED",
+              "services": [
+                {
+                  "serviceOrderServiceId": "d7212222-3eb9-409d-bfff-050fd6444b74",
+                  "serviceId": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+                  "name": "Revisão de freios — vídeo 1029-133432-deb9",
+                  "priceCents": 14000
+                }
+              ],
+              "parts": [
+                {
+                  "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be",
+                  "name": "Pastilha — vídeo 1029-133432-deb9",
+                  "quantity": 2,
+                  "unitPriceCents": 8900,
+                  "subtotalCents": 17800
+                }
+              ],
+              "totalCents": 31800,
+              "publishedAt": "2026-10-29T13:34:32.320545613Z",
+              "decidedAt": "2026-10-29T13:34:32.340634008Z",
+              "decision": "APPROVED"
+            }
+          ],
+          "history": [
+            {
+              "type": "ORDER_RECEIVED",
+              "status": "RECEIVED",
+              "occurredAt": "2026-10-29T13:34:32.235542314Z"
+            },
+            {
+              "type": "DIAGNOSIS_STARTED",
+              "status": "IN_DIAGNOSIS",
+              "occurredAt": "2026-10-29T13:34:32.246831247Z"
+            },
+            {
+              "type": "QUOTE_PUBLISHED",
+              "status": "AWAITING_APPROVAL",
+              "occurredAt": "2026-10-29T13:34:32.263154038Z"
+            },
+            {
+              "type": "QUOTE_REJECTED",
+              "status": "IN_DIAGNOSIS",
+              "occurredAt": "2026-10-29T13:34:32.294544626Z"
+            },
+            {
+              "type": "QUOTE_PUBLISHED",
+              "status": "AWAITING_APPROVAL",
+              "occurredAt": "2026-10-29T13:34:32.320545613Z"
+            },
+            {
+              "type": "QUOTE_APPROVED",
+              "status": "AWAITING_APPROVAL",
+              "occurredAt": "2026-10-29T13:34:32.340634008Z"
+            },
+            {
+              "type": "SERVICE_STARTED",
+              "status": "IN_EXECUTION",
+              "occurredAt": "2026-10-29T13:34:32.422940416Z"
+            },
+            {
+              "type": "SERVICE_COMPLETED",
+              "status": "IN_EXECUTION",
+              "occurredAt": "2026-10-29T13:34:32.743606347Z"
+            },
+            {
+              "type": "ORDER_COMPLETED",
+              "status": "COMPLETED",
+              "occurredAt": "2026-10-29T13:34:32.753962186Z"
+            },
+            {
+              "type": "ORDER_DELIVERED",
+              "status": "DELIVERED",
+              "occurredAt": "2026-10-29T13:34:32.763532309Z"
+            }
+          ],
+          "stockConsumedAt": "2026-10-29T13:34:32.422940416Z",
+          "vehicle": {
+            "plate": "VDO5I53",
+            "brand": "Marca Demo",
+            "model": "Hatch Demonstração",
+            "year": 2024
+          }
+        }
+      },
+      "expectedStatus": 200,
+      "assertions": [
+        {
+          "description": "Código HTTP esperado",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "index": 30,
+      "title": "Cliente acompanha a entrega e o histórico",
+      "phase": "Conclusão",
+      "startedAt": "2026-10-29T13:34:32.772Z",
+      "completedAt": "2026-10-29T13:34:32.775Z",
+      "durationMs": 3.212,
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:18080/api/v1/customer/service-order",
+        "headers": {
+          "Accept": "application/json",
+          "Authorization": "[oculto]"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "no-store",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "body": {
+          "completedAt": "2026-10-29T13:34:32.753962186Z",
+          "createdAt": "2026-10-29T13:34:32.235542314Z",
+          "currentQuote": {
+            "decidedAt": "2026-10-29T13:34:32.340634008Z",
+            "decision": "APPROVED",
+            "id": "d8d39cc4-fd42-4127-82cf-f34d6a425465",
+            "parts": [
+              {
+                "name": "Pastilha — vídeo 1029-133432-deb9",
+                "quantity": 2,
+                "subtotalCents": 17800,
+                "unitPriceCents": 8900
+              }
+            ],
+            "publishedAt": "2026-10-29T13:34:32.320545613Z",
+            "services": [
+              {
+                "name": "Revisão de freios — vídeo 1029-133432-deb9",
+                "priceCents": 14000
+              }
+            ],
+            "status": "APPROVED",
+            "totalCents": 31800,
+            "version": 2
+          },
+          "deliveredAt": "2026-10-29T13:34:32.763532309Z",
+          "executionStartedAt": "2026-10-29T13:34:32.422940416Z",
+          "history": [
+            {
+              "type": "ORDER_RECEIVED",
+              "status": "RECEIVED",
+              "occurredAt": "2026-10-29T13:34:32.235542314Z"
+            },
+            {
+              "type": "DIAGNOSIS_STARTED",
+              "status": "IN_DIAGNOSIS",
+              "occurredAt": "2026-10-29T13:34:32.246831247Z"
+            },
+            {
+              "type": "QUOTE_PUBLISHED",
+              "status": "AWAITING_APPROVAL",
+              "occurredAt": "2026-10-29T13:34:32.263154038Z"
+            },
+            {
+              "type": "QUOTE_REJECTED",
+              "status": "IN_DIAGNOSIS",
+              "occurredAt": "2026-10-29T13:34:32.294544626Z"
+            },
+            {
+              "type": "QUOTE_PUBLISHED",
+              "status": "AWAITING_APPROVAL",
+              "occurredAt": "2026-10-29T13:34:32.320545613Z"
+            },
+            {
+              "type": "QUOTE_APPROVED",
+              "status": "AWAITING_APPROVAL",
+              "occurredAt": "2026-10-29T13:34:32.340634008Z"
+            },
+            {
+              "type": "SERVICE_STARTED",
+              "status": "IN_EXECUTION",
+              "occurredAt": "2026-10-29T13:34:32.422940416Z"
+            },
+            {
+              "type": "SERVICE_COMPLETED",
+              "status": "IN_EXECUTION",
+              "occurredAt": "2026-10-29T13:34:32.743606347Z"
+            },
+            {
+              "type": "ORDER_COMPLETED",
+              "status": "COMPLETED",
+              "occurredAt": "2026-10-29T13:34:32.753962186Z"
+            },
+            {
+              "type": "ORDER_DELIVERED",
+              "status": "DELIVERED",
+              "occurredAt": "2026-10-29T13:34:32.763532309Z"
+            }
+          ],
+          "number": 2,
+          "parts": [
+            {
+              "name": "Pastilha — vídeo 1029-133432-deb9",
+              "quantity": 2
+            }
+          ],
+          "services": [
+            {
+              "completedAt": "2026-10-29T13:34:32.743606347Z",
+              "name": "Revisão de freios — vídeo 1029-133432-deb9",
+              "startedAt": "2026-10-29T13:34:32.422940416Z",
+              "status": "COMPLETED"
+            }
+          ],
+          "status": "DELIVERED",
+          "vehicle": {
+            "plate": "VDO5I53",
+            "brand": "Marca Demo",
+            "model": "Hatch Demonstração",
+            "year": 2024
+          }
+        }
+      },
+      "expectedStatus": 200,
+      "assertions": [
+        {
+          "description": "Código HTTP esperado",
+          "passed": true
+        },
+        {
+          "description": "Cliente visualiza entrega e histórico público",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "index": 31,
+      "title": "Indicadores das OS finalizadas no intervalo real",
+      "phase": "Métricas",
+      "startedAt": "2026-10-29T13:34:32.788Z",
+      "completedAt": "2026-10-29T13:34:32.795Z",
+      "durationMs": 6.552,
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:18080/api/v1/admin/metrics/service-orders?from=2026-10-29T13%3A34%3A30.971Z&to=2026-10-29T13%3A34%3A33.788Z",
+        "headers": {
+          "Accept": "application/json",
+          "Authorization": "[oculto]"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "no-store",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "body": {
+          "completedCount": 1,
+          "currentStatusCounts": {
+            "AWAITING_APPROVAL": 0,
+            "COMPLETED": 0,
+            "DELIVERED": 1,
+            "IN_DIAGNOSIS": 0,
+            "IN_EXECUTION": 0,
+            "RECEIVED": 1
+          },
+          "from": "2026-10-29T13:34:30.971Z",
+          "meanExecutionSeconds": 0.331022,
+          "to": "2026-10-29T13:34:33.788Z"
+        }
+      },
+      "expectedStatus": 200,
+      "assertions": [
+        {
+          "description": "Código HTTP esperado",
+          "passed": true
+        },
+        {
+          "description": "Há ao menos uma OS finalizada e média calculada",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "index": 32,
+      "title": "Tempo médio por serviço — página 1",
+      "phase": "Métricas",
+      "startedAt": "2026-10-29T13:34:32.807Z",
+      "completedAt": "2026-10-29T13:34:32.814Z",
+      "durationMs": 6.718,
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:18080/api/v1/admin/metrics/service-execution?from=2026-10-29T13%3A34%3A30.971Z&to=2026-10-29T13%3A34%3A33.788Z&pageSize=100&page=1",
+        "headers": {
+          "Accept": "application/json",
+          "Authorization": "[oculto]"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "no-store",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "body": {
+          "data": [
+            {
+              "completedCount": 0,
+              "meanExecutionSeconds": null,
+              "serviceId": "64d9416e-c8fb-4ed0-a404-580925aebdc4",
+              "serviceName": "Revisão de freios"
+            },
+            {
+              "completedCount": 1,
+              "meanExecutionSeconds": 0.320666,
+              "serviceId": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+              "serviceName": "Revisão de freios — vídeo 1029-133432-deb9"
+            }
+          ],
+          "page": 1,
+          "pageSize": 100,
+          "total": 2
+        }
+      },
+      "expectedStatus": 200,
+      "assertions": [
+        {
+          "description": "Código HTTP esperado",
+          "passed": true
+        },
+        {
+          "description": "Uma execução concluída, com duração real não negativa",
+          "passed": true
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "serviceOrderId": "ad4c8ecb-e15e-432c-b087-27c858a986ef",
+    "serviceOrderNumber": 2,
+    "finalStatus": "DELIVERED",
+    "finalVersion": 11,
+    "versions": [
+      {
+        "action": "Abertura",
+        "version": 1,
+        "status": "RECEIVED"
+      },
+      {
+        "action": "Diagnóstico: IN_DIAGNOSIS",
+        "version": 2,
+        "status": "IN_DIAGNOSIS"
+      },
+      {
+        "action": "Orçamento automático: AWAITING_APPROVAL",
+        "version": 3,
+        "status": "AWAITING_APPROVAL"
+      },
+      {
+        "action": "Emissão de acesso",
+        "version": 4,
+        "status": "AWAITING_APPROVAL"
+      },
+      {
+        "action": "Rejeição",
+        "version": 5,
+        "status": "IN_DIAGNOSIS"
+      },
+      {
+        "action": "Publicação da segunda versão do orçamento",
+        "version": 6,
+        "status": "AWAITING_APPROVAL"
+      },
+      {
+        "action": "Aprovação",
+        "version": 7,
+        "status": "AWAITING_APPROVAL"
+      },
+      {
+        "action": "Primeiro serviço inicia a execução e baixa as peças",
+        "version": 8,
+        "status": "IN_EXECUTION"
+      },
+      {
+        "action": "Conclusão individual do serviço",
+        "version": 9,
+        "status": "IN_EXECUTION"
+      },
+      {
+        "action": "Finalização explícita da OS: COMPLETED",
+        "version": 10,
+        "status": "COMPLETED"
+      },
+      {
+        "action": "Entrega ao cliente: DELIVERED",
+        "version": 11,
+        "status": "DELIVERED"
+      }
+    ],
+    "quoteVersions": 2,
+    "firstQuoteTotalCents": 32800,
+    "approvedQuoteTotalCents": 31800,
+    "initialBalance": 8,
+    "finalBalance": 6,
+    "consumedQuantity": 2,
+    "serviceExecutionMetric": {
+      "completedCount": 1,
+      "meanExecutionSeconds": 0.320666,
+      "serviceId": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+      "serviceName": "Revisão de freios — vídeo 1029-133432-deb9"
+    },
+    "requestCount": 32,
+    "database": "oficina",
+    "records": {
+      "customerId": "523cd5b3-4263-4485-bd2c-5853898f6fa8",
+      "vehicleId": "ba9e536c-60b3-4170-a926-0bcd131c7995",
+      "serviceId": "8bec8a4c-77ec-42ee-870d-4bbeb6dbd4d1",
+      "inventoryItemId": "125c0ba1-bae2-4200-84a2-eb1142b582be"
+    }
+  },
+  "environment": {
+    "composeProject": "oficina-fiap-verificacao",
+    "apiPort": 18080,
+    "dbPort": 15432
+  }
+}

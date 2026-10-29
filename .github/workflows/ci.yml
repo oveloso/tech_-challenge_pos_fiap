@@ -43,6 +43,7 @@ jobs:
         run: |
           go test -race -count=1 -coverpkg=./... -coverprofile=coverage.out ./...
           go tool cover -func=coverage.out
+          go tool cover -func=coverage.out | awk '/^total:/ { gsub(/%/, "", $3); if ($3+0 < 80) exit 1 }'
           go test -count=1 -coverprofile=critical.out ./internal/domain
           go tool cover -func=critical.out
           go tool cover -func=critical.out | awk '/^total:/ { gsub(/%/, "", $3); if ($3+0 < 80) exit 1 }'

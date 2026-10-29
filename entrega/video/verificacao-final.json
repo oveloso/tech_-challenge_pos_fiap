@@ -1,0 +1,27 @@
+{
+  "verifiedAt": "2026-10-29T13:54:05.120240+00:00",
+  "durationSeconds": 666.85,
+  "dimensions": [
+    1920,
+    1080
+  ],
+  "fps": 30,
+  "chapters": 27,
+  "subtitleCues": 201,
+  "files": [
+    {
+      "name": "tech-challenge-fase-1-grupo-1.mp4",
+      "bytes": 26130204,
+      "sha256": "aba152094ad4d791dba5ac262a767e31efafba79a4f74f2432b4e52b7a6dc9ce"
+    },
+    {
+      "name": "tech-challenge-fase-1-grupo-1.srt",
+      "bytes": 17777,
+      "sha256": "49a95dfaf2e305022753efcb8a7298bd18f2f4519c88853109e9f8c2bc04b820"
+    }
+  ],
+  "validation": "Duração, codecs, capítulos e decodificação integral verificados.",
+  "hashesChecked": true,
+  "narration": "Sintética em português",
+  "capturePrivacy": "Dados sintéticos e credenciais ocultas nas cenas verificadas do Swagger."
+}

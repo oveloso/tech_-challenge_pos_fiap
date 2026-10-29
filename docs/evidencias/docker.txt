@@ -1,66 +1,105 @@
-Verificação do Docker no Windows — 29/10/2026, 10:31 BRT (UTC-03:00)
+Validação Docker — 29/10/2026, 10:42 BRT (UTC-03:00)
 
-RESULTADO LOCAL: engine indisponível antes da construção das imagens.
-Este registro descreve a tentativa no computador Windows. Não substitui o resultado
-do job compose-smoke no GitHub Actions, que verifica o mesmo Compose em Linux.
+RESULTADO: APROVADO EM EXECUÇÃO REAL
+Build, inicialização, seed, saúde, Swagger/OpenAPI, fluxo HTTP, testes com
+PostgreSQL e persistência após recriação dos contêineres foram verificados.
 
-VERIFICAÇÕES CONCLUÍDAS
-- Docker Desktop instalado: 4.48.0; Docker Compose: v2.40.0-desktop.1.
-- docker compose --project-name oficina-fiap-verificacao config --quiet: saída 0.
-- Portas planejadas para esta verificação: API_PORT=18080 e DB_PORT=15432,
-  sem alterar .env nem interferir na API/PostgreSQL nativos.
-- Tags confirmadas como ativas na API oficial do Docker Hub:
-  golang:1.27.3-alpine, alpine:3.23 e postgres:18-alpine.
-- /health e /api/v1/health existem no código; o healthcheck do Compose aponta
-  para /health. A imagem final contém o wget do Alpine e usa usuário UID 10001.
+AMBIENTE E ISOLAMENTO
+- Windows com Docker Desktop 4.48.0; Docker Engine/CLI 28.5.1.
+- Docker Compose v2.40.0-desktop.1; contêineres Linux.
+- Projeto Compose: oficina-fiap-verificacao.
+- Portas somente em loopback: API 127.0.0.1:18080; PostgreSQL 127.0.0.1:15432.
+- API_PORT=18080 e DB_PORT=15432 foram definidos apenas no processo de teste.
+  O arquivo .env não foi alterado; credenciais e tokens não constam da evidência.
+- A API nativa na porta 8080 e o PostgreSQL nativo na porta 55432 permaneceram
+  ativos, com os mesmos processos. A saúde da API nativa continuou respondendo ok.
+- Dockerfile e Compose não precisaram de correções para esta validação.
 
-FALHA OBSERVADA
-docker desktop start --detach iniciou o aplicativo, mas o backend encerrou antes
-da criação do pipe dockerDesktopLinuxEngine. O log registrou:
+BUILD E INICIALIZAÇÃO
+Comandos executados na raiz do projeto, com as duas portas acima:
+  docker compose --project-name oficina-fiap-verificacao config --quiet
+  docker compose --project-name oficina-fiap-verificacao up --build --detach
 
-  starting services: initializing Inference manager:
-  listening on unix://<LOCALAPPDATA>/Docker/run/dockerInference:
-  remove .../dockerInference: The file cannot be accessed by the system.
+Ambos terminaram com código 0. As imagens foram efetivamente baixadas/construídas.
+Tags verificadas no Docker Hub e usadas no build: golang:1.27.3-alpine,
+alpine:3.23 e postgres:18-alpine. A versão executada do PostgreSQL é 18.6.
+O serviço db ficou healthy, o seed terminou com código 0 e a API ficou healthy.
+O processo da API executa como uid=10001(app), gid=10001(app).
 
-O objeto era um socket AF_UNIX vazio (Archive, ReparsePoint). Com o Docker parado
-pelo comando oficial docker desktop stop --force --timeout 15, a pasta contendo
-somente sockets temporários foi preservada por renomeação; não houve exclusão.
-Após recriar a pasta vazia, a inicialização avançou e encontrou a mesma falha em
-<LOCALAPPDATA>/docker-secrets-engine/engine.sock. Essa pasta continha somente esse
-socket vazio e também foi preservada. A nova tentativa chegou à inicialização WSL,
-mas o processo reiniciou e voltou à falha do socket dockerInference.
+Digest das imagens de base do build:
+  golang:1.27.3-alpine
+  sha256:d200d2dd76b03a99b52651fd1325aff7dcd35422c35c01bac56571b0507f3deb
+  alpine:3.23
+  sha256:ff7f0c727dd796aa36787bfcd9a64bf35a6ce72a73451b3359fde849b6703d63
 
-Pastas temporárias preservadas no computador, fora do repositório:
+HTTP E DOCUMENTAÇÃO
+- GET /health e GET /api/v1/health: HTTP 200, status ok.
+- GET /docs: HTTP 200, página Swagger da Oficina API.
+- GET /openapi.yaml: HTTP 200; conteúdo idêntico ao contrato no repositório.
+- SHA-256 do OpenAPI servido e de docs/api/openapi.yaml:
+  798776A13FF68EF26B9FA8D2EFC0F237B1B29A025CB8CEC4F6679D7051DEF625
+
+FLUXO FUNCIONAL REAL — 10:34 BRT
+Arquivo: docker-fluxo.json. Foram realizadas 32 requisições HTTP e 47 verificações,
+todas aprovadas, com cadastros sintéticos no banco exclusivo deste Compose.
+Foram exercitados autenticação, bloqueio sem JWT, cadastro de cliente/veículo,
+serviço/peça, abertura da OS, diagnóstico, orçamento, rejeição, revisão, aprovação,
+início, baixa de estoque, bloqueio de início repetido, conclusão, entrega e métrica.
+- OS 2: ad4c8ecb-e15e-432c-b087-27c858a986ef; estado final DELIVERED; versão 11.
+- Duas versões de orçamento; total aprovado 31.800 centavos (R$ 318,00).
+- Estoque inicial 8 e final 6; uma baixa de 2 unidades no início da execução.
+- A duração registrada pela métrica pertence ao teste automatizado, não representa
+  o tempo necessário para um reparo mecânico real.
+
+TESTES DENTRO DE CONTÊINER LINUX
+Arquivo: docker-testes.txt. O estágio build do mesmo Dockerfile foi construído
+como oficina-fiap-verificacao-go. Os testes usaram o PostgreSQL do Compose,
+em um banco separado oficina_test, via TEST_DATABASE_URL passado por ambiente.
+Comandos executados no contêiner, todos com saída 0:
+  go vet ./...
+  go test -count=1 -coverpkg=./... -coverprofile=/evidence/coverage-docker.out ./...
+  go tool cover -func=/evidence/coverage-docker.out
+  go test -count=1 -coverprofile=/evidence/domain-coverage-docker.out ./internal/domain
+  go tool cover -func=/evidence/domain-coverage-docker.out
+
+Cobertura global: 85,8%. Cobertura do domínio: 99,0%.
+Inclui testes de integração reais com PostgreSQL. CGO_ENABLED=0 nesta execução;
+o detector de corrida não foi executado neste contêiner. Esta medição em Linux
+é distinta da evidência anterior de 85,6% obtida no Windows.
+
+PERSISTÊNCIA — 10:41 BRT
+Arquivo: docker-persistencia.json. Comandos executados no mesmo projeto isolado:
+  docker compose --project-name oficina-fiap-verificacao down
+  docker compose --project-name oficina-fiap-verificacao up --detach
+
+Não foi utilizada a opção -v: o volume oficina-fiap-verificacao_postgres-data foi
+preservado. Os três contêineres e a rede foram recriados, o seed repetiu com código
+0 e API/db retornaram a healthy. As oito verificações de persistência passaram:
+saúde, mesmo ID da OS, estado DELIVERED, versão 11, dois orçamentos, total aprovado
+de 31.800 centavos, estoque em 6 e último evento ORDER_DELIVERED.
+
+REGISTRO DA DIFICULDADE INICIAL DO DOCKER DESKTOP
+O Desktop inicialmente falhou antes de disponibilizar o engine, com a mensagem
+"The file cannot be accessed by the system" ao abrir sockets temporários em
+<LOCALAPPDATA>/Docker/run/dockerInference e docker-secrets-engine/engine.sock.
+Com o Desktop parado pelo comando oficial, os diretórios contendo somente sockets
+vazios foram preservados por renomeação e recriados vazios. Cópias preservadas:
 - <LOCALAPPDATA>/Docker/run-preservado-fiap-20261029
 - <LOCALAPPDATA>/Docker/run-preservado-fiap-20261029-2
 - <LOCALAPPDATA>/docker-secrets-engine-preservado-fiap-20261029
 
-O comando oficial de parada confirmou a interrupção do Docker Desktop. Na checagem
-seguinte surgiram novos processos Desktop/backend; a causa desse reinício não foi
-determinada. Nenhum novo procedimento de recuperação foi aplicado depois disso.
-Não houve reset, reinstalação, limpeza de imagens/volumes, exclusão de VHDX, alteração
-de firewall, antivírus, permissões, virtualização, WSL ou configurações do Docker.
-A API e o PostgreSQL nativos permaneceram em 127.0.0.1:8080 e 127.0.0.1:55432.
-GET http://127.0.0.1:8080/api/v1/health continuou respondendo status ok.
+Depois de um reinício observado dos processos do Desktop, o engine passou a
+responder. A causa exata desse reinício não foi determinada. A validação acima
+foi realizada após a recuperação; o erro inicial não impediu a execução final.
+Não houve reset, reinstalação, limpeza de imagens/volumes, alteração de firewall,
+antivírus, permissões, virtualização, WSL ou configurações do Docker.
 
-LIMITES DA EVIDÊNCIA LOCAL
-- docker compose up --build não pôde ser executado com engine funcional.
-- Não foram construídas imagens nem iniciados contêineres nesta tentativa Windows.
-- Não há resultado local de seed, fluxo HTTP em contêiner, restart/persistência ou
-  testes executados dentro dos contêineres.
-- Dockerfile e Compose não foram alterados por esta investigação.
-
-ARQUIVOS VERIFICADOS (SHA-256)
+ARQUIVOS VALIDADOS (SHA-256)
 docker-compose.yml
 B8AA0969FB07D2EBA53AE23016ECD48FB9AE0CB3FE021121E3A2916AC36131F7
 backend/Dockerfile
 21C7272B6EAD30328DD97E05846F9C7248D6EF86ACF71E47B5667913A696374B
 
-REFERÊNCIAS
-CLI oficial para iniciar/parar Docker Desktop:
+CLI oficial usada para iniciar/parar o Desktop:
 https://docs.docker.com/reference/cli/docker/desktop/start/
 https://docs.docker.com/reference/cli/docker/desktop/stop/
-Relatos do mesmo sintoma no repositório oficial do Docker (relatos de usuários,
-não confirmação de uma causa específica neste computador):
-https://github.com/docker/desktop-feedback/issues/527
-https://github.com/docker/desktop-feedback/issues/625

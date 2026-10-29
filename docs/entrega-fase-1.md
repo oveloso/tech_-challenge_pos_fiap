@@ -1,51 +1,60 @@
 # Requisitos e evidências da fase 1
 
-Referência: enunciado `Fase 1 - Tech Challenge.pdf` e orientações complementares do professor. A entrega técnica abrange a API Go e Swagger. Esta lista distingue implementação, verificações locais e pendências acadêmicas; resultados devem corresponder à versão efetivamente entregue.
+Referência: enunciado `Fase 1 - Tech Challenge.pdf` e orientações complementares do professor. O escopo é uma API Go com Swagger, executada localmente por HTTP em loopback; não inclui frontend próprio nem implantação pública.
 
-Identificação: **Grupo 1 - Lucas Velôso - RM 377934**, curso SOAT, fase 1.
+Identificação: **Grupo 1 — Lucas Velôso — RM 377934**, curso SOAT, fase 1. Discord: **Não utiliza Discord**.
 
-| Requisito | Página | Evidência esperada | Situação |
+| Requisito | Página | Evidência | Situação |
 |---|---|---|---|
-| Clientes e veículos, identificação por documento e placa | 3, 9–11 | API e testes de validação | Implementados; testes de integração aprovados |
-| Catálogo de serviços, peças e insumos | 3, 9–10 | CRUD e testes | Implementados; testes de integração aprovados |
-| OS, orçamento automático e aprovação/rejeição | 3, 9 | Fluxo HTTP e testes | Implementados; revisão, rejeição e aprovação verificadas |
-| Seis status e regras de transição | 3, 9–10 | Domínio, API e testes | Implementados; fluxo até entrega verificado |
-| Consulta da OS pelo cliente | 3, 10 | API e teste de isolamento de acesso | Implementada; isolamento e rotação de token verificados |
-| Controle de estoque e transações | 3, 10–11 | Movimentos e testes de concorrência/rollback | Implementados; concorrência e rollback verificados com PostgreSQL 18.6 |
-| Tempo médio de execução | 4, 10 | Relatório por serviço e por OS | Implementado; intervalos com e sem amostras testados |
-| JWT administrativo | 4, 11 | Autenticação e testes de autorização | Implementado e testado |
-| Monólito em camadas e justificativa do banco | 4, 10 | Código, arquitetura e decisões | Implementado; uso de JSONB, restrições relacionais e transações documentado |
-| REST e OpenAPI/Swagger | 4–6, 10 | Contrato e documentação local | 40 operações; contrato estático e Swagger servidos pelo backend |
-| Dockerfile e Compose | 4 | Ambiente completo reproduzível | Arquivos preparados; configuração validada; execução dos contêineres pendente |
-| Testes unitários e integração; cobertura mínima | 4–5, 11 | Relatórios reproduzíveis da versão entregue | Testes aprovados; domínio com 99,0%; cobertura global de 85,6% |
-| Análise de vulnerabilidades | 5, 7 | Relatório com data, versão analisada e tratamento de achados | Verificação local registrada; detalhamento abaixo |
-| README completo | 5–6 | Objetivo, execução, testes, autenticação, arquitetura e links | Instruções locais documentadas; links públicos pendentes |
-| Event Storming, C4 até o nível 3 e linguagem ubíqua | 8–9 e orientação complementar | Diagramas, glossário e exportações acessíveis | Markdown, seis PNGs e dois PDFs concluídos localmente; publicação pendente |
-| Repositório público; main protegida; PRs | 5–6 | Configuração e histórico no GitHub | Repositório inicializado; publicação por PR, proteção e CI em andamento |
-| Branch e hash da entrega | 6 | Versão identificada no PDF e coerente com o vídeo | Pendente da versão final |
-| Vídeo de até 15 minutos | 6–7 e orientação complementar | Demonstração e identificação; YouTube, Vimeo, Drive ou arquivo acessível | MP4 local versão 3 de 11min00s, com operação do Swagger, concluído e verificado; disponibilização pendente |
-| PDF único de entrega e identificação do grupo | 4–5 e orientação complementar | Grupo, nomes, RMs, tecnologias e links | Identificação recebida; PDF e links finais pendentes |
+| Clientes e veículos, identificação por documento e placa | 3, 9–11 | API e testes de validação | Implementados e testados |
+| Catálogo de serviços, peças e insumos | 3, 9–10 | CRUD e testes | Implementados e testados |
+| OS, orçamento automático e aprovação/rejeição | 3, 9 | Fluxo HTTP e testes | Revisão, rejeição e aprovação verificadas |
+| Seis status e regras de transição | 3, 9–10 | Domínio, API e testes | Fluxo até entrega verificado |
+| Consulta da OS pelo cliente | 3, 10 | API e isolamento de acesso | Isolamento e rotação de token verificados |
+| Estoque e transações | 3, 10–11 | Movimentos, concorrência e rollback | Verificados com PostgreSQL real |
+| Tempo médio de execução | 4, 10 | Métricas por serviço e por OS | Intervalos com e sem amostras testados |
+| JWT administrativo | 4, 11 | Autenticação e autorização | Implementado e testado |
+| Monólito em camadas e justificativa do banco | 4, 10 | Código, arquitetura e decisões | JSONB, restrições relacionais e transações documentados |
+| REST e OpenAPI/Swagger | 4–6, 10 | Contrato e documentação local | 40 operações servidas pelo backend |
+| Dockerfile e Compose | 4 | Build e execução reproduzíveis | Docker local e CI aprovados; seed, saúde e persistência verificados |
+| Testes e cobertura mínima | 4–5, 11 | Relatórios reproduzíveis | Linux/CI: 85,8% global e 99,0% no domínio |
+| Análise de vulnerabilidades | 5, 7 | Relatório com interpretação dos achados | Relatório disponível; ressalva abaixo |
+| README completo | 5–6 | Execução, testes, autenticação, arquitetura e links | Documentado, com links para o pacote de entrega |
+| Event Storming, C4 até o nível 3 e linguagem ubíqua | 8–9 e orientação complementar | Diagramas, glossário e fontes | PDFs, PNGs, Markdown e fonte Excalidraw disponíveis |
+| Repositório público; main protegida; PRs | 5–6 | GitHub e checks obrigatórios | Repositório público, proteção configurada e histórico no PR #1 |
+| Branch e hash da entrega | 6 | Identificação da versão no PDF | Tag fase-1-v1; branch e commit completo no PDF |
+| Vídeo de até 15 minutos | 6–7 e orientação complementar | Demonstração acessível e identificação | Vídeo final de 11min06,85s verificado; arquivo na release |
+| PDF único e identificação do grupo | 4–5 e orientação complementar | Grupo, nomes, RMs, tecnologias e links | Arquivo entrega-fase-1-grupo-1.pdf na release; Discord informado como não utilizado |
 
-Conforme orientação do professor, a documentação DDD reúne Event Storming, linguagem ubíqua e C4 nos níveis 1, 2 e 3. O C4 pode detalhar um cenário: o nível 3 deste projeto cobre o início do primeiro serviço e a baixa de estoque. O modelo é uma construção conceitual do projeto, sem alegação de workshop com especialistas.
+## DDD e arquitetura
 
-Exportações locais: [C4 em PDF](ddd/exports/c4.pdf), [Event Storming em PDF](ddd/exports/event-storming.pdf) e [imagens e fontes](ddd/c4.md). A [linguagem ubíqua](ddd/dominio.md) está junto do modelo de domínio. Esses arquivos ainda precisam ser disponibilizados em links acessíveis para avaliação.
+Conforme orientação do professor, a documentação reúne Event Storming, linguagem ubíqua e C4 nos níveis 1, 2 e 3. O nível 3 detalha um cenário: início do primeiro serviço com baixa de estoque. O modelo é uma construção conceitual do projeto, sem alegação de workshop com especialistas.
 
-## Verificações locais e limites
+- [C4 em PDF](ddd/exports/c4.pdf) e [Event Storming em PDF](ddd/exports/event-storming.pdf).
+- [Linguagem ubíqua e modelo de domínio](ddd/dominio.md).
+- [Fonte editável no Excalidraw](ddd/exports/oficina-ddd.excalidraw) e [imagens e fontes textuais](ddd/c4.md).
+- Quadro compartilhado do Excalidraw: [abrir no Excalidraw](https://excalidraw.com/#json=y-XhNVpZNgjkyZGcGTIug,NSCIC96zvDJ97e1Kz-Tjig).
 
-O [resultado de integração](evidencias/integracao.txt) registra autenticação, cadastros, fluxo completo de OS, snapshots, revisão de orçamento, isolamento e rotação de tokens, estoque insuficiente e concorrência. Os testes foram executados contra PostgreSQL 18.6, fora de contêineres. O daemon Docker local não iniciou; validar o Compose não comprova que as imagens foram construídas ou que o ambiente subiu.
+## Verificação técnica
 
-O [resultado do govulncheck](evidencias/govulncheck.txt) registra zero vulnerabilidades em código alcançável e zero em pacotes importados, mas um achado em módulo requerido sem chamada identificada. Esse resultado não equivale a ausência total de achados em dependências. Conforme orientação do professor, o relatório não precisa estar sem achados; deve apresentar o resultado real, as versões analisadas e a interpretação dos avisos.
+Os [testes de integração](evidencias/integracao.txt) cobrem autenticação, cadastros, fluxo completo de OS, snapshots, revisão de orçamento, isolamento e rotação de tokens, estoque insuficiente, concorrência e rollback. A [validação Docker](evidencias/docker.txt) executou build, seed, saúde, Swagger/OpenAPI e um fluxo de 32 requisições com 47 verificações aprovadas. Após recriar os contêineres sem excluir o volume, as oito verificações de persistência também passaram.
 
-A CI prevista executa verificações Go, testes, cobertura e segurança. A execução remota no GitHub e as configurações de proteção do repositório permanecem pendentes. Swagger precisa de internet para carregar os assets da CDN; a especificação e as operações da API são servidas localmente.
+Os jobs `backend` e `compose-smoke` passaram na [execução 40883124842 do GitHub Actions](https://github.com/oveloso/tech_-challenge_pos_fiap/actions/runs/40883124842). A execução Linux inclui testes com detector de corridas. A cobertura global foi **85,8%**, incluindo os pontos de entrada e persistência com `-coverpkg=./...`; o domínio alcançou **99,0%**. A medição histórica no Windows, em 28/10/2026, permanece registrada em **85,6%** global. São execuções distintas, detalhadas no [registro de verificação](evidencias/verificacao.md).
 
-## Cobertura
+O [govulncheck](evidencias/govulncheck.txt) registrou zero vulnerabilidades em código alcançável e zero em pacotes importados, com um achado em módulo requerido sem chamada identificada. Isso não equivale a ausência total de achados em dependências. Conforme orientação do professor, o relatório não precisa estar sem achados; deve apresentar o resultado e sua interpretação.
 
-O enunciado especifica 80% nos domínios críticos nas páginas 4 e 11 e usa uma formulação geral na página 5. A medição do pacote `internal/domain` é 99,0%. A cobertura global é **85,6%**, incluindo os pontos de entrada e os pacotes de persistência, HTTP e estoque, medida com `-coverpkg=./...` e integração com PostgreSQL real. Os testes verificam regras de negócio, autorização, concorrência, entradas inválidas e rollback. Os comandos, versões e limites estão no [registro de verificações](evidencias/verificacao.md), e os resultados por função no [relatório de cobertura](evidencias/cobertura.txt).
+Swagger precisa de internet para carregar CSS e JavaScript da CDN. A especificação e as operações da API são locais. HTTPS não integra esta demonstração em loopback; uma futura exposição pública exigiria configuração de TLS.
 
-## Preparação do PDF final
+## Repositório e publicação
 
-Incluir Grupo 1, Lucas Velôso, RM 377934, curso SOAT, fase 1, stack, branch e hash final. Acrescentar links para o repositório, diagramas, vídeo e relatório de vulnerabilidades; incluir o glossário separadamente se ele não estiver junto da documentação DDD.
+O [repositório é público](https://github.com/oveloso/tech_-challenge_pos_fiap). A `main` exige PR e os checks `backend` e `compose-smoke`, aplica as regras aos administradores e bloqueia force push e exclusão. O grupo possui um integrante, por isso a quantidade de aprovações adicionais exigidas é zero. O [PR #1](https://github.com/oveloso/tech_-challenge_pos_fiap/pull/1) registra a implementação, as alterações e os checks de cada revisão.
 
-O [vídeo local, versão 3](../entrega/video/README.md), tem 11min00s, narração neural em português, identificação do integrante, diagramas e capturas da operação real no Swagger. A demonstração cria os cadastros e acompanha a OS nº 5, com serviço, peças e insumo, até a entrega. A edição corta esperas e oculta credenciais. O MP4, as legendas, os 27 capítulos e as evidências estão em `entrega/video/`; as versões anteriores permanecem preservadas.
+A [release fase-1-v1](https://github.com/oveloso/tech_-challenge_pos_fiap/releases/tag/fase-1-v1) reúne os arquivos de apresentação:
 
-O vídeo pode ser entregue por YouTube, Vimeo, Drive ou arquivo acessível. Conferir o acesso dos avaliadores e garantir que vídeo, diagramas e relatórios correspondam à mesma versão. A publicação no repositório e a validação em contêineres estão em andamento; o PDF final depende dos links publicados e da identificação da versão.
+- `entrega-fase-1-grupo-1.pdf`: identificação, tecnologias, branch/hash, declaração de apoio de IA e links de avaliação.
+- `tech-challenge-fase-1-grupo-1.mp4`: vídeo final de **11min06,85s**, com 27 capítulos.
+- `tech-challenge-fase-1-grupo-1.srt`: legendas em português, com 201 entradas.
+
+O [vídeo final](../entrega/video/README.md) mostra operação real do Swagger e acompanha a OS nº 5 até a entrega, com orçamento de R$ 338 e saldos de peças 8→6 e insumo 5→4. A edição reduz esperas e oculta credenciais; a narração é sintética em português. O desenvolvimento teve apoio de IA da OpenAI/Codex (GPT-6), sob responsabilidade acadêmica do integrante.
+
+O envio do PDF na plataforma acadêmica é uma etapa separada da publicação dos materiais. O repositório e os arquivos devem continuar acessíveis durante a correção e a revisão de notas.

@@ -29,7 +29,7 @@ API e banco são publicados apenas em `127.0.0.1`, nas portas `API_PORT` e `DB_P
 docker compose down
 ```
 
-**Limite da verificação local:** a configuração Compose foi validada, mas o daemon Docker não iniciou neste ambiente. A construção das imagens e a execução dos contêineres ainda precisam ser verificadas. Os testes de integração disponíveis foram executados diretamente contra PostgreSQL 18.6.
+**Validação concluída:** o ambiente foi construído e executado com Docker Desktop/Engine, incluindo PostgreSQL, seed, saúde, Swagger/OpenAPI e fluxo completo da OS. A persistência foi confirmada após recriar os contêineres sem apagar o volume. A [evidência Docker](docs/evidencias/docker.txt) registra a execução isolada nas portas 18080 e 15432; o [job compose-smoke no GitHub Actions](https://github.com/oveloso/tech_-challenge_pos_fiap/actions/runs/40883124842) também passou.
 
 ### Windows com Go e PostgreSQL
 
@@ -168,11 +168,11 @@ go tool cover -func=critical.out
 go run golang.org/x/vuln/cmd/govulncheck@v1.9.0 ./...
 ```
 
-A verificação local registrou **85,6% de cobertura global**, com `-coverpkg=./...` e PostgreSQL real, e **99,0% no domínio**. `gofmt`, `go vet` e build passaram. O contrato foi validado com 40 operações, 26 caminhos e 380 referências; Swagger respondeu HTTP 200 e foi conferido no navegador. Os comandos, resultados e limites estão no [registro de verificação](docs/evidencias/verificacao.md).
+A medição de 29/10/2026 em Linux/Docker e na CI registrou **85,8% de cobertura global** e **99,0% no domínio**, com PostgreSQL real. O resultado histórico de 28/10/2026 no Windows foi 85,6% global e permanece preservado. Formatação, `go vet`, build e testes passaram. O contrato foi validado com 40 operações, 26 caminhos e 380 referências; Swagger respondeu HTTP 200 e foi conferido no navegador. Os comandos, resultados e limites estão no [registro de verificação](docs/evidencias/verificacao.md).
 
 Evidências: [cobertura](docs/evidencias/cobertura.txt), [fluxo integrado](docs/evidencias/integracao.txt), [entradas inválidas e limites](docs/evidencias/integracao-entradas-hostis.txt), [testes](docs/evidencias/testes.txt) e [vulnerabilidades](docs/evidencias/govulncheck.txt).
 
-A [CI](.github/workflows/ci.yml) configura PostgreSQL 18 e executa formatação, `go vet`, build, testes com detector de corridas, cobertura e `govulncheck`. A execução remota no GitHub permanece pendente. Os resultados de segurança e demais limites são detalhados em [Requisitos e evidências](docs/entrega-fase-1.md).
+A [CI](.github/workflows/ci.yml) configura PostgreSQL 18 e executa formatação, `go vet`, build, testes com detector de corridas, cobertura e `govulncheck`; o job `compose-smoke` constrói e sobe o ambiente Docker. Os jobs `backend` e `compose-smoke` passaram na [execução 40883124842](https://github.com/oveloso/tech_-challenge_pos_fiap/actions/runs/40883124842). Os resultados de segurança e demais limites são detalhados em [Requisitos e evidências](docs/entrega-fase-1.md).
 
 ## Organização e decisões
 
@@ -204,6 +204,12 @@ Cadastros e o agregado de OS usam JSONB, com colunas geradas, chaves estrangeira
 - [C4 até o nível 3 e exportações](docs/ddd/c4.md)
 - [Contrato OpenAPI](docs/api/openapi.yaml)
 - [Requisitos e evidências da entrega](docs/entrega-fase-1.md)
-- [Vídeo com demonstração no Swagger — versão 3, 11min00s](entrega/video/README.md)
+- [Vídeo final com demonstração no Swagger — 11min06,85s](entrega/video/README.md)
+- [Fonte editável dos diagramas no Excalidraw](docs/ddd/exports/oficina-ddd.excalidraw)
+- Quadro compartilhado do Excalidraw: [abrir no Excalidraw](https://excalidraw.com/#json=y-XhNVpZNgjkyZGcGTIug,NSCIC96zvDJ97e1Kz-Tjig)
 
-O modelo DDD é uma construção conceitual do projeto. Diagramas exportados, identificação do Grupo 1 e vídeo narrado estão disponíveis localmente. Publicação do código e dos links, proteção da branch principal, validação da execução em Docker e PDF final com branch e hash ainda são pendências da entrega acadêmica.
+O modelo DDD é uma construção conceitual do projeto. A entrega identifica **Grupo 1 — Lucas Velôso — RM 377934**; Discord: **Não utiliza Discord**. O desenvolvimento teve apoio de IA da OpenAI/Codex (GPT-6), com responsabilidade acadêmica do integrante, e o vídeo usa narração sintética em português.
+
+O [repositório é público](https://github.com/oveloso/tech_-challenge_pos_fiap). A `main` está protegida: mudanças por PR, checks `backend` e `compose-smoke` obrigatórios, regras aplicadas também a administradores e bloqueio de force push e exclusão. Como o grupo possui um integrante, não há aprovação adicional obrigatória. O histórico da implementação e seus checks estão no [PR #1](https://github.com/oveloso/tech_-challenge_pos_fiap/pull/1).
+
+A [release fase-1-v1](https://github.com/oveloso/tech_-challenge_pos_fiap/releases/tag/fase-1-v1) é o pacote de entrega: [PDF com identificação e links](https://github.com/oveloso/tech_-challenge_pos_fiap/releases/download/fase-1-v1/entrega-fase-1-grupo-1.pdf), [vídeo MP4](https://github.com/oveloso/tech_-challenge_pos_fiap/releases/download/fase-1-v1/tech-challenge-fase-1-grupo-1.mp4) e [legendas SRT](https://github.com/oveloso/tech_-challenge_pos_fiap/releases/download/fase-1-v1/tech-challenge-fase-1-grupo-1.srt). A tag identifica a versão do código; o PDF registra o commit completo. O escopo técnico é uma API executada localmente por HTTP em loopback, demonstrada pelo Swagger; não inclui implantação pública. HTTPS seria necessário para uma futura exposição em rede.
