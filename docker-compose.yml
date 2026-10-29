@@ -1,0 +1,59 @@
+name: oficina-tech-challenge
+
+x-backend: &backend
+  build: ./backend
+  environment: &backend-env
+    DATABASE_URL: postgres://${POSTGRES_USER:-oficina}:${POSTGRES_PASSWORD:?Defina POSTGRES_PASSWORD no .env}@db:5432/${POSTGRES_DB:-oficina}?sslmode=disable
+    JWT_SECRET: ${JWT_SECRET:?Defina JWT_SECRET no .env}
+    ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+    ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Defina ADMIN_PASSWORD no .env}
+    DEMO_DATA: ${DEMO_DATA:-true}
+    CUSTOMER_TOKEN_TTL: 30d
+    CORS_ORIGINS: http://localhost:${API_PORT:-8080},http://127.0.0.1:${API_PORT:-8080}
+    OPENAPI_PATH: /app/openapi.yaml
+    PORT: 8080
+    HOST: 0.0.0.0
+  volumes:
+    - ./docs/api/openapi.yaml:/app/openapi.yaml:ro
+
+services:
+  db:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-oficina}
+      POSTGRES_USER: ${POSTGRES_USER:-oficina}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Defina POSTGRES_PASSWORD no .env}
+    volumes:
+      - postgres-data:/var/lib/postgresql
+    ports:
+      - "127.0.0.1:${DB_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  seed:
+    <<: *backend
+    command: ["/app/seed"]
+    depends_on:
+      db:
+        condition: service_healthy
+
+  api:
+    <<: *backend
+    ports:
+      - "127.0.0.1:${API_PORT:-8080}:8080"
+    depends_on:
+      seed:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:8080/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 12
+    restart: unless-stopped
+
+volumes:
+  postgres-data:

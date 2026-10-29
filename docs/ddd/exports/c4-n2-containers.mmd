@@ -1,0 +1,17 @@
+flowchart LR
+    U["Consumidor HTTP ou Swagger
+Funcionário / Cliente"]
+    subgraph S["Sistema da oficina"]
+      A["API Go / Gin
+REST, /docs e /openapi.yaml"]
+      D[("PostgreSQL 18
+JSONB, movimentos e restrições")]
+      A -->|"SQL / pgx / transações"| D
+    end
+    U -->|"HTTP / JSON / Bearer"| A
+    U -.->|"HTTPS: assets Swagger 5.33.1"| CDN["jsDelivr
+Sistema externo"]
+    classDef app fill:#1D5D8F,color:#fff,stroke:#1D5D8F;
+    classDef ext fill:#E7E9ED,color:#172C3F,stroke:#BCC4CC;
+    class A app;
+    class U,CDN ext;

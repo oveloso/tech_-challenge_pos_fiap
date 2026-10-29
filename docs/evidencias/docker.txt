@@ -1,0 +1,66 @@
+Verificação do Docker no Windows — 29/10/2026, 10:31 BRT (UTC-03:00)
+
+RESULTADO LOCAL: engine indisponível antes da construção das imagens.
+Este registro descreve a tentativa no computador Windows. Não substitui o resultado
+do job compose-smoke no GitHub Actions, que verifica o mesmo Compose em Linux.
+
+VERIFICAÇÕES CONCLUÍDAS
+- Docker Desktop instalado: 4.48.0; Docker Compose: v2.40.0-desktop.1.
+- docker compose --project-name oficina-fiap-verificacao config --quiet: saída 0.
+- Portas planejadas para esta verificação: API_PORT=18080 e DB_PORT=15432,
+  sem alterar .env nem interferir na API/PostgreSQL nativos.
+- Tags confirmadas como ativas na API oficial do Docker Hub:
+  golang:1.27.3-alpine, alpine:3.23 e postgres:18-alpine.
+- /health e /api/v1/health existem no código; o healthcheck do Compose aponta
+  para /health. A imagem final contém o wget do Alpine e usa usuário UID 10001.
+
+FALHA OBSERVADA
+docker desktop start --detach iniciou o aplicativo, mas o backend encerrou antes
+da criação do pipe dockerDesktopLinuxEngine. O log registrou:
+
+  starting services: initializing Inference manager:
+  listening on unix://<LOCALAPPDATA>/Docker/run/dockerInference:
+  remove .../dockerInference: The file cannot be accessed by the system.
+
+O objeto era um socket AF_UNIX vazio (Archive, ReparsePoint). Com o Docker parado
+pelo comando oficial docker desktop stop --force --timeout 15, a pasta contendo
+somente sockets temporários foi preservada por renomeação; não houve exclusão.
+Após recriar a pasta vazia, a inicialização avançou e encontrou a mesma falha em
+<LOCALAPPDATA>/docker-secrets-engine/engine.sock. Essa pasta continha somente esse
+socket vazio e também foi preservada. A nova tentativa chegou à inicialização WSL,
+mas o processo reiniciou e voltou à falha do socket dockerInference.
+
+Pastas temporárias preservadas no computador, fora do repositório:
+- <LOCALAPPDATA>/Docker/run-preservado-fiap-20261029
+- <LOCALAPPDATA>/Docker/run-preservado-fiap-20261029-2
+- <LOCALAPPDATA>/docker-secrets-engine-preservado-fiap-20261029
+
+O comando oficial de parada confirmou a interrupção do Docker Desktop. Na checagem
+seguinte surgiram novos processos Desktop/backend; a causa desse reinício não foi
+determinada. Nenhum novo procedimento de recuperação foi aplicado depois disso.
+Não houve reset, reinstalação, limpeza de imagens/volumes, exclusão de VHDX, alteração
+de firewall, antivírus, permissões, virtualização, WSL ou configurações do Docker.
+A API e o PostgreSQL nativos permaneceram em 127.0.0.1:8080 e 127.0.0.1:55432.
+GET http://127.0.0.1:8080/api/v1/health continuou respondendo status ok.
+
+LIMITES DA EVIDÊNCIA LOCAL
+- docker compose up --build não pôde ser executado com engine funcional.
+- Não foram construídas imagens nem iniciados contêineres nesta tentativa Windows.
+- Não há resultado local de seed, fluxo HTTP em contêiner, restart/persistência ou
+  testes executados dentro dos contêineres.
+- Dockerfile e Compose não foram alterados por esta investigação.
+
+ARQUIVOS VERIFICADOS (SHA-256)
+docker-compose.yml
+B8AA0969FB07D2EBA53AE23016ECD48FB9AE0CB3FE021121E3A2916AC36131F7
+backend/Dockerfile
+21C7272B6EAD30328DD97E05846F9C7248D6EF86ACF71E47B5667913A696374B
+
+REFERÊNCIAS
+CLI oficial para iniciar/parar Docker Desktop:
+https://docs.docker.com/reference/cli/docker/desktop/start/
+https://docs.docker.com/reference/cli/docker/desktop/stop/
+Relatos do mesmo sintoma no repositório oficial do Docker (relatos de usuários,
+não confirmação de uma causa específica neste computador):
+https://github.com/docker/desktop-feedback/issues/527
+https://github.com/docker/desktop-feedback/issues/625

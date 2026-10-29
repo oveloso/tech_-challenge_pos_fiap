@@ -1,0 +1,541 @@
+{
+  "identification": "Grupo 1 — Lucas Velôso — RM 377934",
+  "captured_date": "2026-10-29",
+  "timezone": "America/Sao_Paulo",
+  "method": "Operações feitas no Swagger por controles de interface; respostas extraídas do JSON visível na página.",
+  "data_notice": "Cadastros e documento CPF sintéticos para demonstração acadêmica, sem associação intencional a pessoas reais.",
+  "records": {
+    "ids": {
+      "customerId": "bf138c88-227c-410f-a3e6-509d464967a9",
+      "vehicleId": "22e3173e-c899-41fc-b8b8-a5c03c2ab6a3",
+      "catalogServiceId": "143c96e2-449f-4dc9-bfa7-3d5470581cf5",
+      "partId": "4282ae1a-b22b-4ce2-98aa-3c7e25c74d60",
+      "supplyId": "4b00f602-569a-4935-b881-53c81f75b357",
+      "orderId": "364a2e94-6bf0-45eb-9b54-0caa5a9b3eb0",
+      "orderServiceId": "19a380b7-605c-4780-a944-c8a11716907a",
+      "quoteId": "fcbb1c6f-04ca-4142-897a-2a697e391cab"
+    },
+    "customer": {
+      "active": true,
+      "createdAt": "2026-10-29T03:10:01.2613872Z",
+      "document": "99985860977",
+      "documentType": "CPF",
+      "email": null,
+      "id": "bf138c88-227c-410f-a3e6-509d464967a9",
+      "name": "Cliente fictício — demonstração 1029-0003-C118",
+      "phone": null,
+      "updatedAt": "2026-10-29T03:10:01.2613872Z"
+    },
+    "vehicle": {
+      "active": true,
+      "brand": "Marca Demo",
+      "createdAt": "2026-10-29T03:11:22.5958115Z",
+      "customerId": "bf138c88-227c-410f-a3e6-509d464967a9",
+      "id": "22e3173e-c899-41fc-b8b8-a5c03c2ab6a3",
+      "model": "Hatch Demonstração",
+      "plate": "VDO6K87",
+      "updatedAt": "2026-10-29T03:11:22.5958115Z",
+      "year": 2024
+    },
+    "service": {
+      "active": true,
+      "createdAt": "2026-10-29T03:12:01.9323022Z",
+      "description": null,
+      "id": "143c96e2-449f-4dc9-bfa7-3d5470581cf5",
+      "name": "Revisão de freios — demonstração 1029-0003-C118",
+      "priceCents": 15000,
+      "updatedAt": "2026-10-29T03:12:01.9323022Z"
+    },
+    "part": {
+      "active": true,
+      "balance": 8,
+      "createdAt": "2026-10-29T03:12:36.8040505Z",
+      "id": "4282ae1a-b22b-4ce2-98aa-3c7e25c74d60",
+      "name": "Pastilha — demonstração 1029-0003-C118",
+      "priceCents": 8900,
+      "sku": "PECA-DEMO-1029-0003-C118",
+      "type": "PART",
+      "updatedAt": "2026-10-29T03:12:36.8040505Z"
+    },
+    "supply": {
+      "active": true,
+      "balance": 5,
+      "createdAt": "2026-10-29T03:13:01.0362247Z",
+      "id": "4b00f602-569a-4935-b881-53c81f75b357",
+      "name": "Fluido de limpeza — demonstração 1029-0003-C118",
+      "priceCents": 1000,
+      "sku": "INSUMO-DEMO-1029-0003-C118",
+      "type": "SUPPLY",
+      "updatedAt": "2026-10-29T03:13:01.0362247Z"
+    },
+    "orderCreated": {
+      "id": "364a2e94-6bf0-45eb-9b54-0caa5a9b3eb0",
+      "number": 5,
+      "customerId": "bf138c88-227c-410f-a3e6-509d464967a9",
+      "customerName": "Cliente fictício — demonstração 1029-0003-C118",
+      "vehicleId": "22e3173e-c899-41fc-b8b8-a5c03c2ab6a3",
+      "vehiclePlate": "VDO6K87",
+      "status": "RECEIVED",
+      "version": 1,
+      "createdAt": "2026-10-29T03:14:36.1257232Z",
+      "executionStartedAt": null,
+      "completedAt": null,
+      "deliveredAt": null,
+      "problemDescription": "Ruído ao frear. Atendimento fictício para demonstração acadêmica.",
+      "services": [
+        {
+          "id": "19a380b7-605c-4780-a944-c8a11716907a",
+          "serviceId": "143c96e2-449f-4dc9-bfa7-3d5470581cf5",
+          "name": "Revisão de freios — demonstração 1029-0003-C118",
+          "status": "NOT_STARTED",
+          "startedAt": null,
+          "completedAt": null
+        }
+      ],
+      "parts": [
+        {
+          "inventoryItemId": "4282ae1a-b22b-4ce2-98aa-3c7e25c74d60",
+          "sku": "PECA-DEMO-1029-0003-C118",
+          "name": "Pastilha — demonstração 1029-0003-C118",
+          "quantity": 2
+        },
+        {
+          "inventoryItemId": "4b00f602-569a-4935-b881-53c81f75b357",
+          "sku": "INSUMO-DEMO-1029-0003-C118",
+          "name": "Fluido de limpeza — demonstração 1029-0003-C118",
+          "quantity": 1
+        }
+      ],
+      "currentQuote": null,
+      "quotes": [],
+      "history": [
+        {
+          "type": "ORDER_RECEIVED",
+          "status": "RECEIVED",
+          "occurredAt": "2026-10-29T03:14:36.1257232Z"
+        }
+      ],
+      "stockConsumedAt": null,
+      "vehicle": {
+        "plate": "VDO6K87",
+        "brand": "Marca Demo",
+        "model": "Hatch Demonstração",
+        "year": 2024
+      }
+    },
+    "orderDelivered": {
+      "id": "364a2e94-6bf0-45eb-9b54-0caa5a9b3eb0",
+      "number": 5,
+      "customerId": "bf138c88-227c-410f-a3e6-509d464967a9",
+      "customerName": "Cliente fictício — demonstração 1029-0003-C118",
+      "vehicleId": "22e3173e-c899-41fc-b8b8-a5c03c2ab6a3",
+      "vehiclePlate": "VDO6K87",
+      "status": "DELIVERED",
+      "version": 9,
+      "createdAt": "2026-10-29T03:14:36.1257232Z",
+      "executionStartedAt": "2026-10-29T03:18:55.5153354Z",
+      "completedAt": "2026-10-29T03:20:07.0436685Z",
+      "deliveredAt": "2026-10-29T03:20:26.4625674Z",
+      "problemDescription": "Ruído ao frear. Atendimento fictício para demonstração acadêmica.",
+      "services": [
+        {
+          "id": "19a380b7-605c-4780-a944-c8a11716907a",
+          "serviceId": "143c96e2-449f-4dc9-bfa7-3d5470581cf5",
+          "name": "Revisão de freios — demonstração 1029-0003-C118",
+          "status": "COMPLETED",
+          "startedAt": "2026-10-29T03:18:55.5153354Z",
+          "completedAt": "2026-10-29T03:19:54.1839359Z"
+        }
+      ],
+      "parts": [
+        {
+          "inventoryItemId": "4282ae1a-b22b-4ce2-98aa-3c7e25c74d60",
+          "sku": "PECA-DEMO-1029-0003-C118",
+          "name": "Pastilha — demonstração 1029-0003-C118",
+          "quantity": 2
+        },
+        {
+          "inventoryItemId": "4b00f602-569a-4935-b881-53c81f75b357",
+          "sku": "INSUMO-DEMO-1029-0003-C118",
+          "name": "Fluido de limpeza — demonstração 1029-0003-C118",
+          "quantity": 1
+        }
+      ],
+      "currentQuote": {
+        "id": "fcbb1c6f-04ca-4142-897a-2a697e391cab",
+        "version": 1,
+        "status": "APPROVED",
+        "services": [
+          {
+            "serviceOrderServiceId": "19a380b7-605c-4780-a944-c8a11716907a",
+            "serviceId": "143c96e2-449f-4dc9-bfa7-3d5470581cf5",
+            "name": "Revisão de freios — demonstração 1029-0003-C118",
+            "priceCents": 15000
+          }
+        ],
+        "parts": [
+          {
+            "inventoryItemId": "4282ae1a-b22b-4ce2-98aa-3c7e25c74d60",
+            "name": "Pastilha — demonstração 1029-0003-C118",
+            "quantity": 2,
+            "unitPriceCents": 8900,
+            "subtotalCents": 17800
+          },
+          {
+            "inventoryItemId": "4b00f602-569a-4935-b881-53c81f75b357",
+            "name": "Fluido de limpeza — demonstração 1029-0003-C118",
+            "quantity": 1,
+            "unitPriceCents": 1000,
+            "subtotalCents": 1000
+          }
+        ],
+        "totalCents": 33800,
+        "publishedAt": "2026-10-29T03:16:44.8723263Z",
+        "decidedAt": "2026-10-29T03:18:24.3975631Z",
+        "decision": "APPROVED"
+      },
+      "quotes": [
+        {
+          "id": "fcbb1c6f-04ca-4142-897a-2a697e391cab",
+          "version": 1,
+          "status": "APPROVED",
+          "services": [
+            {
+              "serviceOrderServiceId": "19a380b7-605c-4780-a944-c8a11716907a",
+              "serviceId": "143c96e2-449f-4dc9-bfa7-3d5470581cf5",
+              "name": "Revisão de freios — demonstração 1029-0003-C118",
+              "priceCents": 15000
+            }
+          ],
+          "parts": [
+            {
+              "inventoryItemId": "4282ae1a-b22b-4ce2-98aa-3c7e25c74d60",
+              "name": "Pastilha — demonstração 1029-0003-C118",
+              "quantity": 2,
+              "unitPriceCents": 8900,
+              "subtotalCents": 17800
+            },
+            {
+              "inventoryItemId": "4b00f602-569a-4935-b881-53c81f75b357",
+              "name": "Fluido de limpeza — demonstração 1029-0003-C118",
+              "quantity": 1,
+              "unitPriceCents": 1000,
+              "subtotalCents": 1000
+            }
+          ],
+          "totalCents": 33800,
+          "publishedAt": "2026-10-29T03:16:44.8723263Z",
+          "decidedAt": "2026-10-29T03:18:24.3975631Z",
+          "decision": "APPROVED"
+        }
+      ],
+      "history": [
+        {
+          "type": "ORDER_RECEIVED",
+          "status": "RECEIVED",
+          "occurredAt": "2026-10-29T03:14:36.1257232Z"
+        },
+        {
+          "type": "DIAGNOSIS_STARTED",
+          "status": "IN_DIAGNOSIS",
+          "occurredAt": "2026-10-29T03:15:37.4435964Z"
+        },
+        {
+          "type": "QUOTE_PUBLISHED",
+          "status": "AWAITING_APPROVAL",
+          "occurredAt": "2026-10-29T03:16:44.8723263Z"
+        },
+        {
+          "type": "QUOTE_APPROVED",
+          "status": "AWAITING_APPROVAL",
+          "occurredAt": "2026-10-29T03:18:24.3975631Z"
+        },
+        {
+          "type": "SERVICE_STARTED",
+          "status": "IN_EXECUTION",
+          "occurredAt": "2026-10-29T03:18:55.5153354Z"
+        },
+        {
+          "type": "SERVICE_COMPLETED",
+          "status": "IN_EXECUTION",
+          "occurredAt": "2026-10-29T03:19:54.1839359Z"
+        },
+        {
+          "type": "ORDER_COMPLETED",
+          "status": "COMPLETED",
+          "occurredAt": "2026-10-29T03:20:07.0436685Z"
+        },
+        {
+          "type": "ORDER_DELIVERED",
+          "status": "DELIVERED",
+          "occurredAt": "2026-10-29T03:20:26.4625674Z"
+        }
+      ],
+      "stockConsumedAt": "2026-10-29T03:18:55.5153354Z",
+      "vehicle": {
+        "plate": "VDO6K87",
+        "brand": "Marca Demo",
+        "model": "Hatch Demonstração",
+        "year": 2024
+      }
+    },
+    "stockAfter": {
+      "part": {
+        "active": true,
+        "balance": 6,
+        "createdAt": "2026-10-29T03:12:36.8040505Z",
+        "id": "4282ae1a-b22b-4ce2-98aa-3c7e25c74d60",
+        "name": "Pastilha — demonstração 1029-0003-C118",
+        "priceCents": 8900,
+        "sku": "PECA-DEMO-1029-0003-C118",
+        "type": "PART",
+        "updatedAt": "2026-10-29T03:18:55.5153354Z"
+      },
+      "supply": {
+        "active": true,
+        "balance": 4,
+        "createdAt": "2026-10-29T03:13:01.0362247Z",
+        "id": "4b00f602-569a-4935-b881-53c81f75b357",
+        "name": "Fluido de limpeza — demonstração 1029-0003-C118",
+        "priceCents": 1000,
+        "sku": "INSUMO-DEMO-1029-0003-C118",
+        "type": "SUPPLY",
+        "updatedAt": "2026-10-29T03:18:55.5153354Z"
+      }
+    }
+  },
+  "published_quote": {
+    "id": "364a2e94-6bf0-45eb-9b54-0caa5a9b3eb0",
+    "number": 5,
+    "customerId": "bf138c88-227c-410f-a3e6-509d464967a9",
+    "customerName": "Cliente fictício — demonstração 1029-0003-C118",
+    "vehicleId": "22e3173e-c899-41fc-b8b8-a5c03c2ab6a3",
+    "vehiclePlate": "VDO6K87",
+    "status": "AWAITING_APPROVAL",
+    "version": 3,
+    "createdAt": "2026-10-29T03:14:36.1257232Z",
+    "executionStartedAt": null,
+    "completedAt": null,
+    "deliveredAt": null,
+    "problemDescription": "Ruído ao frear. Atendimento fictício para demonstração acadêmica.",
+    "services": [
+      {
+        "id": "19a380b7-605c-4780-a944-c8a11716907a",
+        "serviceId": "143c96e2-449f-4dc9-bfa7-3d5470581cf5",
+        "name": "Revisão de freios — demonstração 1029-0003-C118",
+        "status": "NOT_STARTED",
+        "startedAt": null,
+        "completedAt": null
+      }
+    ],
+    "parts": [
+      {
+        "inventoryItemId": "4282ae1a-b22b-4ce2-98aa-3c7e25c74d60",
+        "sku": "PECA-DEMO-1029-0003-C118",
+        "name": "Pastilha — demonstração 1029-0003-C118",
+        "quantity": 2
+      },
+      {
+        "inventoryItemId": "4b00f602-569a-4935-b881-53c81f75b357",
+        "sku": "INSUMO-DEMO-1029-0003-C118",
+        "name": "Fluido de limpeza — demonstração 1029-0003-C118",
+        "quantity": 1
+      }
+    ],
+    "currentQuote": {
+      "id": "fcbb1c6f-04ca-4142-897a-2a697e391cab",
+      "version": 1,
+      "status": "PENDING",
+      "services": [
+        {
+          "serviceOrderServiceId": "19a380b7-605c-4780-a944-c8a11716907a",
+          "serviceId": "143c96e2-449f-4dc9-bfa7-3d5470581cf5",
+          "name": "Revisão de freios — demonstração 1029-0003-C118",
+          "priceCents": 15000
+        }
+      ],
+      "parts": [
+        {
+          "inventoryItemId": "4282ae1a-b22b-4ce2-98aa-3c7e25c74d60",
+          "name": "Pastilha — demonstração 1029-0003-C118",
+          "quantity": 2,
+          "unitPriceCents": 8900,
+          "subtotalCents": 17800
+        },
+        {
+          "inventoryItemId": "4b00f602-569a-4935-b881-53c81f75b357",
+          "name": "Fluido de limpeza — demonstração 1029-0003-C118",
+          "quantity": 1,
+          "unitPriceCents": 1000,
+          "subtotalCents": 1000
+        }
+      ],
+      "totalCents": 33800,
+      "publishedAt": "2026-10-29T03:16:44.8723263Z",
+      "decidedAt": null,
+      "decision": null
+    },
+    "quotes": [
+      {
+        "id": "fcbb1c6f-04ca-4142-897a-2a697e391cab",
+        "version": 1,
+        "status": "PENDING",
+        "services": [
+          {
+            "serviceOrderServiceId": "19a380b7-605c-4780-a944-c8a11716907a",
+            "serviceId": "143c96e2-449f-4dc9-bfa7-3d5470581cf5",
+            "name": "Revisão de freios — demonstração 1029-0003-C118",
+            "priceCents": 15000
+          }
+        ],
+        "parts": [
+          {
+            "inventoryItemId": "4282ae1a-b22b-4ce2-98aa-3c7e25c74d60",
+            "name": "Pastilha — demonstração 1029-0003-C118",
+            "quantity": 2,
+            "unitPriceCents": 8900,
+            "subtotalCents": 17800
+          },
+          {
+            "inventoryItemId": "4b00f602-569a-4935-b881-53c81f75b357",
+            "name": "Fluido de limpeza — demonstração 1029-0003-C118",
+            "quantity": 1,
+            "unitPriceCents": 1000,
+            "subtotalCents": 1000
+          }
+        ],
+        "totalCents": 33800,
+        "publishedAt": "2026-10-29T03:16:44.8723263Z",
+        "decidedAt": null,
+        "decision": null
+      }
+    ],
+    "history": [
+      {
+        "type": "ORDER_RECEIVED",
+        "status": "RECEIVED",
+        "occurredAt": "2026-10-29T03:14:36.1257232Z"
+      },
+      {
+        "type": "DIAGNOSIS_STARTED",
+        "status": "IN_DIAGNOSIS",
+        "occurredAt": "2026-10-29T03:15:37.4435964Z"
+      },
+      {
+        "type": "QUOTE_PUBLISHED",
+        "status": "AWAITING_APPROVAL",
+        "occurredAt": "2026-10-29T03:16:44.8723263Z"
+      }
+    ],
+    "stockConsumedAt": null,
+    "vehicle": {
+      "plate": "VDO6K87",
+      "brand": "Marca Demo",
+      "model": "Hatch Demonstração",
+      "year": 2024
+    }
+  },
+  "customer_final_view": {
+    "completedAt": "2026-10-29T03:20:07.0436685Z",
+    "createdAt": "2026-10-29T03:14:36.1257232Z",
+    "currentQuote": {
+      "decidedAt": "2026-10-29T03:18:24.3975631Z",
+      "decision": "APPROVED",
+      "id": "fcbb1c6f-04ca-4142-897a-2a697e391cab",
+      "parts": [
+        {
+          "name": "Pastilha — demonstração 1029-0003-C118",
+          "quantity": 2,
+          "subtotalCents": 17800,
+          "unitPriceCents": 8900
+        },
+        {
+          "name": "Fluido de limpeza — demonstração 1029-0003-C118",
+          "quantity": 1,
+          "subtotalCents": 1000,
+          "unitPriceCents": 1000
+        }
+      ],
+      "publishedAt": "2026-10-29T03:16:44.8723263Z",
+      "services": [
+        {
+          "name": "Revisão de freios — demonstração 1029-0003-C118",
+          "priceCents": 15000
+        }
+      ],
+      "status": "APPROVED",
+      "totalCents": 33800,
+      "version": 1
+    },
+    "deliveredAt": "2026-10-29T03:20:26.4625674Z",
+    "executionStartedAt": "2026-10-29T03:18:55.5153354Z",
+    "history": [
+      {
+        "type": "ORDER_RECEIVED",
+        "status": "RECEIVED",
+        "occurredAt": "2026-10-29T03:14:36.1257232Z"
+      },
+      {
+        "type": "DIAGNOSIS_STARTED",
+        "status": "IN_DIAGNOSIS",
+        "occurredAt": "2026-10-29T03:15:37.4435964Z"
+      },
+      {
+        "type": "QUOTE_PUBLISHED",
+        "status": "AWAITING_APPROVAL",
+        "occurredAt": "2026-10-29T03:16:44.8723263Z"
+      },
+      {
+        "type": "QUOTE_APPROVED",
+        "status": "AWAITING_APPROVAL",
+        "occurredAt": "2026-10-29T03:18:24.3975631Z"
+      },
+      {
+        "type": "SERVICE_STARTED",
+        "status": "IN_EXECUTION",
+        "occurredAt": "2026-10-29T03:18:55.5153354Z"
+      },
+      {
+        "type": "SERVICE_COMPLETED",
+        "status": "IN_EXECUTION",
+        "occurredAt": "2026-10-29T03:19:54.1839359Z"
+      },
+      {
+        "type": "ORDER_COMPLETED",
+        "status": "COMPLETED",
+        "occurredAt": "2026-10-29T03:20:07.0436685Z"
+      },
+      {
+        "type": "ORDER_DELIVERED",
+        "status": "DELIVERED",
+        "occurredAt": "2026-10-29T03:20:26.4625674Z"
+      }
+    ],
+    "number": 5,
+    "parts": [
+      {
+        "name": "Pastilha — demonstração 1029-0003-C118",
+        "quantity": 2
+      },
+      {
+        "name": "Fluido de limpeza — demonstração 1029-0003-C118",
+        "quantity": 1
+      }
+    ],
+    "services": [
+      {
+        "completedAt": "2026-10-29T03:19:54.1839359Z",
+        "name": "Revisão de freios — demonstração 1029-0003-C118",
+        "startedAt": "2026-10-29T03:18:55.5153354Z",
+        "status": "COMPLETED"
+      }
+    ],
+    "status": "DELIVERED",
+    "vehicle": {
+      "plate": "VDO6K87",
+      "brand": "Marca Demo",
+      "model": "Hatch Demonstração",
+      "year": 2024
+    }
+  }
+}

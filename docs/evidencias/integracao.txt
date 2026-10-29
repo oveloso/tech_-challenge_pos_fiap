@@ -1,0 +1,30 @@
+=== RUN   TestAPIIntegration
+=== RUN   TestAPIIntegration/authentication_and_input_validation
+=== RUN   TestAPIIntegration/registrations_soft_delete_and_inventory
+=== RUN   TestAPIIntegration/complete_service_order_workflow
+=== RUN   TestAPIIntegration/complete_service_order_workflow/creation_snapshots_and_token_isolation
+=== RUN   TestAPIIntegration/complete_service_order_workflow/diagnosis_items_and_stale_version
+=== RUN   TestAPIIntegration/complete_service_order_workflow/quote_total_and_immutable_prices
+=== RUN   TestAPIIntegration/complete_service_order_workflow/rejection_revision_approval_and_superseded_decisions
+=== RUN   TestAPIIntegration/complete_service_order_workflow/insufficient_stock_rolls_back_entire_start
+=== RUN   TestAPIIntegration/complete_service_order_workflow/concurrent_starts_consume_stock_once
+=== RUN   TestAPIIntegration/complete_service_order_workflow/finish_services_complete_order_and_deliver
+=== RUN   TestAPIIntegration/complete_service_order_workflow/execution_metrics_and_empty_intervals
+=== RUN   TestAPIIntegration/complete_service_order_workflow/token_rotation_transfer_and_preserved_history
+=== RUN   TestAPIIntegration/two_orders_compete_for_one_stock_unit
+--- PASS: TestAPIIntegration (0.48s)
+    --- PASS: TestAPIIntegration/authentication_and_input_validation (0.06s)
+    --- PASS: TestAPIIntegration/registrations_soft_delete_and_inventory (0.08s)
+    --- PASS: TestAPIIntegration/complete_service_order_workflow (0.24s)
+        --- PASS: TestAPIIntegration/complete_service_order_workflow/creation_snapshots_and_token_isolation (0.01s)
+        --- PASS: TestAPIIntegration/complete_service_order_workflow/diagnosis_items_and_stale_version (0.01s)
+        --- PASS: TestAPIIntegration/complete_service_order_workflow/quote_total_and_immutable_prices (0.01s)
+        --- PASS: TestAPIIntegration/complete_service_order_workflow/rejection_revision_approval_and_superseded_decisions (0.03s)
+        --- PASS: TestAPIIntegration/complete_service_order_workflow/insufficient_stock_rolls_back_entire_start (0.01s)
+        --- PASS: TestAPIIntegration/complete_service_order_workflow/concurrent_starts_consume_stock_once (0.04s)
+        --- PASS: TestAPIIntegration/complete_service_order_workflow/finish_services_complete_order_and_deliver (0.04s)
+        --- PASS: TestAPIIntegration/complete_service_order_workflow/execution_metrics_and_empty_intervals (0.01s)
+        --- PASS: TestAPIIntegration/complete_service_order_workflow/token_rotation_transfer_and_preserved_history (0.04s)
+    --- PASS: TestAPIIntegration/two_orders_compete_for_one_stock_unit (0.05s)
+PASS
+ok  	oficina/tests	1.555s

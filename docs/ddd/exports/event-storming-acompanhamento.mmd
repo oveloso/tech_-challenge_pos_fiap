@@ -1,0 +1,31 @@
+flowchart LR
+    A1["Ator: Cliente autorizado"]:::actor --> C1["Consultar OS"]:::read
+    C1 --> G1["Agregado: OS"]:::aggregate
+    G1 --> E1["Visão restrita da OS"]:::read
+    P1["Regra: Token de escopo único; leitura sem transição"]:::policy -.-> C1
+    A2["Ator: Cliente autorizado"]:::actor --> C2["Aprovar ou rejeitar orçamento"]:::command
+    C2 --> G2["Agregado: OS"]:::aggregate
+    G2 --> E2["Orçamento aprovado ou rejeitado"]:::event
+    P2["Regra: Só vigente e pendente; rejeição retorna ao diagnóstico; aprovação aguarda início"]:::policy -.-> C2
+    E1 --> C2
+    A3["Ator: Funcionário"]:::actor --> C3["Iniciar serviço"]:::command
+    C3 --> G3["Agregado: OS / Estoque"]:::aggregate
+    G3 --> E3["Serviço e execução iniciados"]:::event
+    P3["Regra: Exige aprovação; primeiro início baixa peças"]:::policy -.-> C3
+    E2 --> C3
+    A4["Ator: Funcionário"]:::actor --> C4["Concluir serviços e finalizar OS"]:::command
+    C4 --> G4["Agregado: OS"]:::aggregate
+    G4 --> E4["Serviços concluídos; OS finalizada"]:::event
+    P4["Regra: Finalizar exige todos concluídos"]:::policy -.-> C4
+    E3 --> C4
+    A5["Ator: Funcionário"]:::actor --> C5["Registrar entrega"]:::command
+    C5 --> G5["Agregado: OS"]:::aggregate
+    G5 --> E5["OS entregue"]:::event
+    P5["Regra: Somente OS finalizada"]:::policy -.-> C5
+    E4 --> C5
+    classDef actor fill:#F5DD95,color:#172C3F,stroke:#705615;
+    classDef command fill:#CDE6FA,color:#172C3F,stroke:#174E78;
+    classDef aggregate fill:#FFF0A8,color:#172C3F,stroke:#796014;
+    classDef event fill:#FFD3A5,color:#172C3F,stroke:#8D4312;
+    classDef policy fill:#E7DDF3,color:#172C3F,stroke:#60427E;
+    classDef read fill:#D6EEDB,color:#172C3F,stroke:#315E3C;
