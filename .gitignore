@@ -1,0 +1,14 @@
+.env
+.env.*
+!.env.example
+node_modules/
+dist/
+coverage/
+*.exe
+*.test
+*.out
+*.log
+tmp/
+entrega/video/*.mp4
+entrega/pdf/
+.DS_Store
